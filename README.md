@@ -117,5 +117,4 @@ We welcome contributions! Please follow these steps:
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-## Contact
-For any inquiries, please contact us at support@sparklewash.com.
+
