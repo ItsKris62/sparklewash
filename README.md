@@ -26,6 +26,41 @@ Sparklewash is a comprehensive web application designed to provide top-notch lau
 - **Deployment**: Docker, Kubernetes
 - **CI/CD**: GitHub Actions
 
+  ## User Journey
+- ** Sign Up/Login: The user registers or logs into their account.
+- ** Browse Services: The user browses the available services and selects the ones they need.
+- ** Place Order: The user fills out the order form, selects pickup and delivery options, and completes the payment.
+- ** Track Order: The user tracks the order status through their dashboard and receives notifications.
+- ** Receive Order: The user receives their cleaned items as per the delivery schedule.
+- ** Provide Feedback: The user provides feedback on the service received.
+
+## Roles and Responsibilities for a User/Customer
+- ** Account Management
+- ** Placing orders
+- ** Payment
+- ** Order Tracking
+- ** Communication
+- ** Compliance
+
+## Color Codes
+- ** Primary Colors:**
+- ** Navy Blue: #004080
+- ** Sky Blue: #87CEEB
+- ** White: #FFFFFF
+- ** Accent Colors:**
+- ** Bright Yellow: #FFD700
+- ** Light Grey: #D3D3D3
+- ** Background Colors:**
+- ** Soft Blue: #E0F7FA
+- ** Light Beige: #F5F5DC
+
+## Fonts
+- ** 1. Montserrat - Headings and titles.
+- ** 2. Roboto - Body text.
+- ** 3. Raleway - Subheadings and special sections.
+- ** 4. Lato - Body text and navigation menus
+- ** 5. Open Sans - General text.
+
 ## Installation
 1. **Clone the repository**:
     ```bash
