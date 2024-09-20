@@ -42,6 +42,51 @@ Sparklewash is a comprehensive web application designed to provide top-notch lau
 - ** Communication
 - ** Compliance
 
+**1. Sign Up/Login**
+## Frontend:
+Components: LoginForm.js, RegisterForm.js
+Pages: Login.js, Register.js
+Services: api.js (for making API calls to the backend for user authentication)
+## Backend:
+Controllers: UserController.php (handles registration and login logic)
+Routes: api.php (defines routes for user registration and login)
+**2. Browse Services**
+## Frontend:
+Pages: Services.js (displays available services)
+Components: ServiceCard.js (individual service display component)
+## Backend:
+Controllers: ServiceController.php (handles fetching services)
+Routes: api.php (defines routes for fetching services)
+**3. Place Order**
+## Frontend:
+Pages: OrderForm.js (form for placing orders)
+Services: api.js (for making API calls to the backend to place orders)
+## Backend:
+Controllers: OrderController.php (handles order placement logic)
+Routes: api.php (defines routes for placing orders)
+**4. Track Order**
+## Frontend:
+Pages: UserDashboard.js (dashboard for tracking orders)
+Services: api.js (for making API calls to the backend to fetch order status)
+## Backend:
+Controllers: OrderController.php (handles fetching order status)
+Routes: api.php (defines routes for fetching order status)
+**5. Receive Order**
+## Frontend:
+Pages: UserDashboard.js (dashboard for tracking delivery status)
+Services: api.js (for making API calls to the backend to update delivery status)
+## Backend:
+Controllers: OrderController.php (handles updating delivery status)
+Routes: api.php (defines routes for updating delivery status)
+**6. Provide Feedback**
+## Frontend:
+Pages: UserDashboard.js (dashboard for providing feedback)
+Components: FeedbackForm.js (form for submitting feedback)
+Services: api.js (for making API calls to the backend to submit feedback)
+## Backend:
+Controllers: FeedbackController.php (handles feedback submission logic)
+Routes: api.php (defines routes for submitting feedback)
+
 ## Color Codes
 - ** Primary Colors:**
 - ** Navy Blue: #004080
