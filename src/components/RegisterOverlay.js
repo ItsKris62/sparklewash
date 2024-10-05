@@ -2,7 +2,7 @@ import React from 'react';
 
 const RegisterOverlay = ({ isOpen, onClose }) => {
   return (
-    <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+    <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ${isOpen ? '' : 'hidden'}`} style={{ zIndex: 40 }}>
       <div className="bg-white rounded-lg p-8 shadow-lg w-96">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <form>

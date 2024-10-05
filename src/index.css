@@ -4,16 +4,29 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', sans-serif; /* Set Roboto as the default body text font */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif; /* Headings and Titles */
+}
+
+h2.subheading, .special-section {
+  font-family: 'Raleway', sans-serif; /* Subheadings and Special Sections */
+}
+
+nav, .nav-item {
+  font-family: 'Lato', sans-serif; /* Navigation menus */
+}
+
+p, a, li {
+  font-family: 'Open Sans', sans-serif; /* General text */
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 html {

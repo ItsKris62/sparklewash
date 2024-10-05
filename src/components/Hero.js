@@ -2,21 +2,21 @@ import React from 'react';
 import heroImage from '../assets/images/drycleaners.jpg'; // Import your hero image
 
 const Hero = () => {
-    return (
-        <section className="relative w-full h-screen bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }}>
+  return (
+    <section className="relative w-full h-screen bg-cover bg-center z-10" style={{ backgroundImage: `url(${heroImage})` }}>
       <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
-        <div className="text-center text-white px-4">
+        <div className="text-center text-[#FFD700] px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Clean Slate</h1>
           <p className="text-lg md:text-xl mb-8">
             Your one-stop solution for laundry and dry cleaning services. Experience convenience like never before!
           </p>
           <button
             type="submit"
-            className="flex justify-center gap-2 items-center mx-auto shadow-xl text-lg bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-emerald-500 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group"
+            className="flex justify-center gap-2 items-center mx-auto shadow-xl text-lg bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-navy hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group"
           >
             View Services
             <svg
-              className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-navy ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
+              className="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-[#FFD700] text-navy ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
               viewBox="0 0 16 19"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -29,7 +29,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
-    );
-  };
+  );
+};
 
 export default Hero;

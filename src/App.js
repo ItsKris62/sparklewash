@@ -6,6 +6,7 @@ import Footer from './layouts/Footer';
 import Login from './pages/Login'; // Import your Login page
 import Register from './pages/Register'; // Import your Register page
 import Services from './pages/Services'; // Import your Services page
+import UserDashboard from './pages/UserDashboard'; // Import your User Dashboard page
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
           {/* Add more routes as needed */}
         </Routes>
         <Footer />
