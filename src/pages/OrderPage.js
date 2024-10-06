@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import SideNav from '../layouts/SideNav'; // Importing SideNav
 import SearchBar from '../components/SearchBar';
 import OrderCard from '../components/OrderCard';
 import OrderList from '../components/OrderList';
@@ -23,6 +24,23 @@ const OrdersPage = () => {
       billingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
       paymentInfo: { method: 'Visa', transactionId: 'TXN98765' }
     },
+    {
+      invoiceNumber: 'INV12346',
+      serviceType: 'Landscaping Services',
+      status: 'Pending',
+      transactionType: 'M-Pesa',
+      transactionReference: 'SJ123456ABC',
+      date: '2024-10-06',
+      amount: 350.75,
+      additionalServices: ['Lawn Mawing', 'Weeds removal'],
+      subtotal: 340,
+      shipping: 0.0,
+      tax: 10.75,
+      total: 350.75,
+      shippingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
+      billingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
+      paymentInfo: { method: 'MPESA', transactionId: 'SJ123456ABC' }
+    },
     // Add more mock orders here
   ]);
   
@@ -31,11 +49,10 @@ const OrdersPage = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    // Add search filtering logic here (e.g., filtering orders based on query)
+    // Add search filtering logic here
   };
 
   const handleCreateNewOrder = () => {
-    // Logic for creating a new order
     console.log('Create New Order');
   };
 
@@ -44,20 +61,23 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <SearchBar onSearch={handleSearch} />
+    <div className="flex min-h-screen">
+      <SideNav userName="John Doe" /> {/* SideNav added here */}
+      <div className="p-6 w-full">
+        <SearchBar onSearch={handleSearch} />
 
-      <div className="mb-8">
-        <OrderCard onCreateNewOrder={handleCreateNewOrder} />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <OrderList orders={orders} onSelectOrder={handleSelectOrder} />
+        <div className="mb-8">
+          <OrderCard onCreateNewOrder={handleCreateNewOrder} />
         </div>
 
-        <div>
-          <OrderDetailCard order={selectedOrder} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <OrderList orders={orders} onSelectOrder={handleSelectOrder} />
+          </div>
+
+          <div>
+            <OrderDetailCard order={selectedOrder} />
+          </div>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ const SearchBar = ({ onSearch }) => {
           placeholder="Search orders..."
           onChange={(e) => onSearch(e.target.value)}
         />
-        <button className="ml-4 p-2 bg-blue-600 text-white rounded-lg">
+        <button className="ml-4 p-2 bg-navy text-white rounded-lg">
           <i className="fas fa-search"></i>
         </button>
       </div>

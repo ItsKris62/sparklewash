@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SideNav from '../layouts/SideNav';
 
 const ProfileManagement = () => {
   const [userData, setUserData] = useState({
@@ -37,6 +38,8 @@ const ProfileManagement = () => {
   };
 
   return (
+    <div className="flex min-h-screen">
+      <SideNav userName="John Doe" /> {/* SideNav here */}
     <div className="p-8 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold mb-6">Profile Management</h2>
       <form onSubmit={handleUpdate} className="space-y-6">
@@ -137,6 +140,7 @@ const ProfileManagement = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
