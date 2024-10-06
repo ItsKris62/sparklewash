@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import DashboardHeader from '../layouts/DashboardHeader';
+import { useNavigate } from 'react-router-dom';
+import SideNav from '../layouts/SideNav'; // Import your SideNav
 import ServicesSection from '../components/SevicesSection';
 import ServiceModal from '../components/ServiceModal';
 
@@ -8,6 +9,8 @@ const UserDashboard = () => {
   const [points, setPoints] = useState(200);
   const [selectedService, setSelectedService] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  
+  const navigate = useNavigate(); // Use navigate to redirect
 
   const services = [
     { name: 'Laundry Services', description: 'Full-service laundry care.', basePrice: 50 },
@@ -35,21 +38,29 @@ const UserDashboard = () => {
     setModalOpen(false);
   };
 
-  return (
-    <div className="container mx-auto p-6">
-      <DashboardHeader totalOrders={totalOrders} points={points} />
-      
-      <h2 className="text-2xl font-bold mb-4">Available Services</h2>
-      <ServicesSection services={services} onCheckout={handleCheckout} />
+  // Handle logout action
+  const handleLogout = () => {
+    // Implement logout logic here (clear session, tokens), then navigate to Home
+    navigate('/'); // Redirect to Home page
+  };
 
-      {selectedService && (
-        <ServiceModal
-          service={selectedService}
-          isOpen={modalOpen}
-          onClose={handleModalClose}
-          onSubmit={handleOrderSubmit}
-        />
-      )}
+  return (
+    <div className="flex">
+      <SideNav userName="Current User" onLogout={handleLogout} /> {/* Pass user name and logout handler */}
+      
+      <div className="flex-1 p-6">
+        <h2 className="text-2xl font-bold mb-4">Available Services</h2>
+        <ServicesSection services={services} onCheckout={handleCheckout} />
+
+        {selectedService && (
+          <ServiceModal
+            service={selectedService}
+            isOpen={modalOpen}
+            onClose={handleModalClose}
+            onSubmit={handleOrderSubmit}
+          />
+        )}
+      </div>
     </div>
   );
 };
