@@ -1,16 +1,23 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/images/drycleaners.jpg'; // Import your hero image
 
 const Hero = () => {
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const handleViewServices = () => {
+    navigate('/services'); // Navigate to the services page
+  };
+
   return (
     <section className="relative w-full h-screen bg-cover bg-center z-10" style={{ backgroundImage: `url(${heroImage})` }}>
-      <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
+      <div className="flex items-center justify-center h-full bg-black bg-opacity-50 pt-30">
         <div className="text-center text-[#FFD700] px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Clean Slate</h1>
           <p className="text-lg md:text-xl mb-8">
             Your one-stop solution for laundry and dry cleaning services. Experience convenience like never before!
           </p>
-          <button
+          <button onClick={handleViewServices} // Attach the click handler
             type="submit"
             className="flex justify-center gap-2 items-center mx-auto shadow-xl text-lg bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-navy hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group"
           >

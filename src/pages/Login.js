@@ -2,35 +2,55 @@ import React, { useState } from 'react';
 
 const Login = () => {
     const [showOverlay, setShowOverlay] = useState(false);
-    const [email, setEmail] = useState('');
+    const [contact, setContact] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleSSO = () => {
-        // Handle single sign-on process
-        console.log("Single Sign-On initiated with email:", email);
+        console.log("Single Sign-On initiated with contact:", contact);
         setShowOverlay(false);
     };
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen bg-softBlue">
-            <h1 className="text-4xl font-bold text-navyBlue mb-5">Login</h1>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
-                <div className="mb-4">
-                    <label className="block text-navyBlue text-sm font-bold mb-2" htmlFor="contact">
-                        Contact
+        <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-[#004080] to-[#005f8e]">
+            <h1 className="text-4xl font-bold text-white mb-5">Login</h1>
+            <form className="bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-4 w-full max-w-md">
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contact">
+                        Email Address or Contact
                     </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-navyBlue leading-tight focus:outline-none focus:shadow-outline" id="contact" type="text" placeholder="Contact" />
+                    <input 
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="contact" 
+                        type="text" 
+                        placeholder="Email or Contact Number" 
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
+                    />
                 </div>
                 <div className="mb-6">
-                    <label className="block text-navyBlue text-sm font-bold mb-2" htmlFor="password">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                         Password
                     </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-navyBlue leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Password" />
+                    <input 
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        id="password" 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
-                <button className="bg-navyBlue hover:bg-skyBlue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" type="button" onClick={() => alert('Logging in...')}>
+                <button 
+                    className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300"
+                    type="button" 
+                    onClick={() => alert('Logging in...')}>
                     Login
                 </button>
                 <div className="mt-4 text-center">
-                    <button className="text-navyBlue hover:text-skyBlue" type="button" onClick={() => setShowOverlay(true)}>
+                    <button 
+                        className="text-[#005f8e] hover:text-[#0077a6] transition duration-300" 
+                        type="button" 
+                        onClick={() => setShowOverlay(true)}>
                         Use Single Sign-On
                     </button>
                 </div>
@@ -38,19 +58,23 @@ const Login = () => {
 
             {showOverlay && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white rounded-lg p-6 w-1/3">
-                        <h2 className="text-lg font-bold">Enter your Email for SSO</h2>
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-1/3">
+                        <h2 className="text-lg font-bold mb-4">Enter your Email for SSO</h2>
                         <input 
-                            className="shadow border rounded w-full py-2 px-3 text-navyBlue leading-tight focus:outline-none focus:shadow-outline mb-4" 
+                            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4" 
                             type="email" 
                             placeholder="Email" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={contact}
+                            onChange={(e) => setContact(e.target.value)}
                         />
-                        <button className="bg-navyBlue hover:bg-skyBlue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleSSO}>
+                        <button 
+                            className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300" 
+                            onClick={handleSSO}>
                             Submit
                         </button>
-                        <button className="text-red-500 mt-4" onClick={() => setShowOverlay(false)}>
+                        <button 
+                            className="text-red-500 mt-4 hover:text-red-700 transition duration-300" 
+                            onClick={() => setShowOverlay(false)}>
                             Close
                         </button>
                     </div>

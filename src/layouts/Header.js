@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginOverlay from '../components/LoginOverlay';
 import RegisterOverlay from '../components/RegisterOverlay';
-import Logo from '../assets/images/Logo_Design-removebg.png'; // Make sure to import your logo image
+import Logo from '../assets/images/logoTRANS.png'; // Make sure to import your logo image
 
 const Header = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -44,13 +44,13 @@ const Header = () => {
           </nav>
           <div className="flex space-x-4">
             <button
-              className="relative px-8 py-2 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center px-4 py-3 text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
+              className="relative px-8 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center py-3 text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
               onClick={handleLoginClick}
             >
               Login
             </button>
             <button
-              className="relative px-8 py-2 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center px-4 py-3 text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
+              className="relative px-8 py-2 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
               onClick={handleRegisterClick}
             >
               Signup
