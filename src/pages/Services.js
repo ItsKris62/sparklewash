@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../layouts/Header'; // Import the Header component
 import serviceImage1 from '../assets/images/professional-ironing-service.jpg'; // Ironing Service
 import serviceImage2 from '../assets/images/dry-cleaning.jpg'; // Dry Cleaning Service
 import serviceImage3 from '../assets/images/carpet-cleaning.jpg'; // Carpet Cleaning Service
@@ -42,7 +43,8 @@ const Services = () => {
 
   return (
     <div className="bg-[#F5F5DC] py-16">
-      <div className="container mx-auto text-center">
+      <Header /> {/* Add the Header component here */}
+      <div className="container mx-auto text-center pt-24"> {/* Added pt-24 to give space for the fixed header */}
         <h2 className="text-3xl font-bold mb-10">Our Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (

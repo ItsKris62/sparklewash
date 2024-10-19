@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login = () => {
     const [showOverlay, setShowOverlay] = useState(false);
     const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    const handleLogin = () => {
+        // Static credentials (replace with your preferred credentials)
+        const staticCredentials = {
+            contact: 'admin@example.com', // Example email
+            password: 'password123', // Example password
+        };
+
+        // Check if the entered credentials match static credentials
+        if (contact === staticCredentials.contact && password === staticCredentials.password) {
+            // Redirect to the admin dashboard on successful login
+            navigate('/admin-dashboard'); // Adjust the path to your actual admin dashboard route
+        } else {
+            alert('Invalid credentials. Please try again.');
+        }
+    };
 
     const handleSSO = () => {
         console.log("Single Sign-On initiated with contact:", contact);
@@ -43,7 +61,7 @@ const Login = () => {
                 <button 
                     className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300"
                     type="button" 
-                    onClick={() => alert('Logging in...')}>
+                    onClick={handleLogin}> {/* Call handleLogin on click */}
                     Login
                 </button>
                 <div className="mt-4 text-center">

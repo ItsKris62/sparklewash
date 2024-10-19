@@ -94,16 +94,17 @@ const FeaturedServices = () => {
                             ))}
                         </ul>
                         <p className="mb-4">To request this service or place an order, please sign in or sign up.</p>
-                        <button onClick={handleLogin} className="bg-blue-500 text-white py-2 px-4 rounded-full mb-2 transition duration-300 hover:bg-blue-400">
-                            Sign In
-                        </button>
-                        <br />
-                        <button onClick={handleSignUp} className="bg-green-500 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-green-400">
-                            Sign Up
-                        </button>
-                        <button onClick={closeOverlay} className="bg-red-500 text-white py-2 px-4 rounded-full mt-4 transition duration-300 hover:bg-red-400">
-                            Close
-                        </button>
+                        <div className="flex justify-center space-x-2">
+                            <button onClick={handleLogin} className="bg-blue-500 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-blue-400">
+                                Sign In
+                            </button>
+                            <button onClick={handleSignUp} className="bg-green-500 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-green-400">
+                                Sign Up
+                            </button>
+                            <button onClick={closeOverlay} className="bg-red-500 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-400">
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

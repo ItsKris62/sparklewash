@@ -1,74 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Header from './layouts/Header';
-import DashboardHeader from './layouts/DashboardHeader'; // Import your DashboardHeader
+// src/App.js
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
-import Footer from './layouts/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Services from './pages/Services';
 import UserDashboard from './pages/UserDashboard';
-import Orders from './pages/OrderPage'; // Import the Orders page
-import ProfileManagement from './pages/ProfileManagement'; // Import the ProfileManagement page
-
-import './App.css';
+import Orders from './pages/OrderPage';
+import ProfileManagement from './pages/ProfileManagement';
+import AdminDashboard from './pages/AdminDashboard'; 
+import Footer from './layouts/Footer'; // Footer for non-dashboard pages
+import AdminUserMgmnt from './components/AdminDashboard/AdminUserMgmnt'; // Ensure this path is correct
+import AdminOrders from './components/AdminDashboard/AdminOrders'; // Ensure this path is correct
+import AdminSettings from './components/AdminDashboard/AdminSettings'; // Ensure this path is correct
+import AdminServices from './components/AdminDashboard/AdminServices'; // Ensure this path is correct
+import AdminDashboardHome from './pages/AdminDashboard'; // Optional landing component for admin dashboard
 
 function App() {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [totalOrders, setTotalOrders] = useState(0);
-  const [points, setPoints] = useState(0);
 
-  // Simulate fetching random figures
-  useEffect(() => {
-    // Simulate fetching data from a database
-    const fetchData = async () => {
-      // Uncomment the following lines to fetch data from your database
-      // const response = await fetch('/api/user-data'); // Example fetch call
-      // const data = await response.json();
-      // setTotalOrders(data.totalOrders);
-      // setPoints(data.points);
-      
-      // For now, use random figures
-      setTotalOrders(Math.floor(Math.random() * 100)); // Random total orders
-      setPoints(Math.floor(Math.random() * 500)); // Random points
-    };
+  // Define routes for user and admin dashboards
+  const userDashboardRoutes = ['/user-dashboard', '/orders', '/profile'];
+  const adminDashboardRoutes = ['/admin-dashboard/*']; // Catch-all for admin dashboard
 
-    fetchData();
-  }, []); // Empty dependency array means this runs once when the component mounts.
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    console.log("Logged out."); // Add your actual logout logic here.
-  };
-
-  const dashboardRoutes = ['/user-dashboard', '/orders', '/profile'];
+  const isUserDashboard = userDashboardRoutes.includes(location.pathname);
+  const isAdminDashboard = adminDashboardRoutes.some(route => location.pathname.startsWith(route));
 
   return (
     <div className="App">
-      {/* Show DashboardHeader if on a specified dashboard route, otherwise show Header */}
-      {dashboardRoutes.includes(location.pathname) ? (
-        <DashboardHeader 
-          totalOrders={totalOrders} 
-          points={points} 
-          onLogout={handleLogout} 
-        />
-      ) : (
-        <Header />
-      )}
-
+      {/* Conditionally render routes */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/services" element={<Services />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/profile" element={<ProfileManagement />} />
+
+        {/* Admin dashboard routes */}
+        <Route path="/admin-dashboard/*" element={<AdminDashboard />}>
+          <Route index element={<AdminDashboardHome />} /> {/* Optional: Default landing page for Admin */}
+          <Route path="admin-users" element={<AdminUserMgmnt />} />
+          <Route path="admin-orders" element={<AdminOrders />} />
+          <Route path="admin-settings" element={<AdminSettings />} />
+          <Route path="admin-services" element={<AdminServices />} />
+        </Route>
       </Routes>
 
-      {/* Conditionally render Footer only on non-dashboard pages */}
-      {!dashboardRoutes.includes(location.pathname) && <Footer />}
+      {/* Conditionally render the footer */}
+      {!isUserDashboard && !isAdminDashboard && <Footer />}
     </div>
   );
 }

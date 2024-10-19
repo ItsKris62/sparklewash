@@ -32,7 +32,7 @@ const OrdersPage = () => {
       transactionReference: 'SJ123456ABC',
       date: '2024-10-06',
       amount: 350.75,
-      additionalServices: ['Lawn Mawing', 'Weeds removal'],
+      additionalServices: ['Lawn Mowing', 'Weeds removal'],
       subtotal: 340,
       shipping: 0.0,
       tax: 10.75,
@@ -43,7 +43,7 @@ const OrdersPage = () => {
     },
     // Add more mock orders here
   ]);
-  
+
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -63,7 +63,7 @@ const OrdersPage = () => {
   return (
     <div className="flex min-h-screen">
       <SideNav userName="John Doe" /> {/* SideNav added here */}
-      <div className="p-6 w-full">
+      <div className="p-6 ml-64 w-full"> {/* Adding margin-left to avoid overlap */}
         <SearchBar onSearch={handleSearch} />
 
         <div className="mb-8">

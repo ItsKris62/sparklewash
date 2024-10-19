@@ -27,30 +27,30 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-20 bg-white bg-opacity-70 backdrop-blur-lg">
-        <div className="container mx-auto flex justify-between items-center py-4 px-6">
+        <div className="container mx-auto flex justify-between items-center py-2 px-4"> {/* Adjusted padding here */}
           <div className="flex items-center">
-            <img src={Logo} alt="Clean Slate Logo" className="h-16 w-16 mr-3" />
-            <h1 className="text-navy font-bold text-2xl transition-colors duration-300 hover:text-yellow-500">
+            <img src={Logo} alt="Clean Slate Logo" className="h-12 w-12 mr-2" /> {/* Reduced logo size */}
+            <h1 className="text-navy font-bold text-xl transition-colors duration-300 hover:text-yellow-500"> {/* Reduced font size */}
               Clean Slate
             </h1>
           </div>
-          <nav className="space-x-4">
-            <Link to="/" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-2 border border-transparent hover:border-[#FFD700]">
+          <nav className="space-x-3"> {/* Adjusted spacing */}
+            <Link to="/" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-1 border border-transparent hover:border-[#FFD700]"> {/* Adjusted padding */}
               Home
             </Link>
-            <Link to="/services" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-2 border border-transparent hover:border-[#FFD700]">
+            <Link to="/services" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-1 border border-transparent hover:border-[#FFD700]"> {/* Adjusted padding */}
               Services
             </Link>
           </nav>
-          <div className="flex space-x-4">
+          <div className="flex space-x-3"> {/* Adjusted spacing */}
             <button
-              className="relative px-8 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center py-3 text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
+              className="relative px-4 py-1 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
               onClick={handleLoginClick}
             >
               Login
             </button>
             <button
-              className="relative px-8 py-2 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
+              className="relative px-4 py-1 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-black bg-white border border-gray-200 shadow-sm gap-x-2"
               onClick={handleRegisterClick}
             >
               Signup

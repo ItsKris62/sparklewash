@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+export { default as Button } from './components/ui/Button';
+export { default as Table } from './components/ui/Table';
+export { default as Badge } from './components/ui/Badge';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
