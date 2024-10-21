@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Toast from '../ui/Toast'; // Make sure to import the Toast component
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulating login logic (replace with actual authentication logic)
     if (email === 'admin@example.com' && password === 'admin123') {
-      navigate('/admin/dashboard');
+      setShowToast(true);
+      setTimeout(() => {
+        navigate('/admin/dashboard');
+      }, 2000); // Delay navigation to allow toast to show
     } else {
       setError('Invalid email or password');
+      setShowToast(true);
     }
+  };
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+    setError(''); // Reset error message when toast is closed
   };
 
   return (
@@ -52,6 +62,12 @@ const AdminLogin = () => {
             Login
           </button>
         </form>
+        {showToast && (
+          <Toast 
+            message={error ? error : "Login successful!"} 
+            onClose={handleCloseToast} 
+          />
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import AdminAnalytics from './components/AdminDashboard/AdminAnalytics'; // Impo
 import AdminLogs from './components/AdminDashboard/AdminLogs'; // Import Logs
 import AdminReports from './components/AdminDashboard/AdminReports'; // Import Reports 
 import Dashboard from './components/AdminDashboard/Dashboard'; // Import Dashboard
+import AdminLogin from './components/AdminDashboard/AdminLogin'; // Import the AdminLogin component
 
 function App() {
   const location = useLocation();
@@ -47,6 +48,7 @@ function App() {
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="logs" element={<AdminLogs />} />
           <Route path="reports" element={<AdminReports />} />
+         
           {/* Add any other admin routes here */}
         </Route>
       </Routes>

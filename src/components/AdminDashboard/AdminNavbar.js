@@ -74,11 +74,11 @@ const AdminNavbar = () => {
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-50">
+            <div className="absolute right-0 mt-2 w-48 bg-navy rounded shadow-lg z-50">
               <ul className="max-h-60 overflow-y-auto">
                 {notifications.length > 0 ? (
                   notifications.map(notification => (
-                    <li key={notification.id} className="p-2 border-b hover:bg-gray-100">
+                    <li key={notification.id} className="p-2 border-b hover:bg-[#87CEEB]">
                       {notification.message}
                     </li>
                   ))
