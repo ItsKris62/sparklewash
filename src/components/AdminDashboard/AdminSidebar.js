@@ -5,25 +5,28 @@ import {
   FaUsers,
   FaTasks,
   FaCogs,
+  FaChartBar,
+  FaClipboardList,
+  FaFileAlt,
   FaSignOutAlt,
 } from 'react-icons/fa';
 
 const AdminSidebar = () => {
   return (
-    <aside className="w-64 bg-gray-900 text-white h-full fixed top-0 left-0 z-20">
+    <aside className="w-64 bg-gray-900 text-white h-full fixed top-16 left-0 z-20"> {/* Adjusted top to 16 to align with fixed navbar */}
       <div className="flex flex-col justify-between h-full">
         {/* Menu Links */}
-        <nav className="flex flex-col mt-10"> {/* Adjusted margin-top for extra space below the navbar */}
+        <nav className="flex flex-col mt-2">
           <NavLink
-            to="/admin/dashboard"
+            to="/admin-dashboard"
             className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
           >
-            <FaHome className="text-xl mb-1" /> {/* Increased icon size and added bottom margin */}
+            <FaHome className="text-xl mb-1" />
             <span className="ml-4">Dashboard</span>
           </NavLink>
 
           <NavLink
-            to="/admin/users"
+            to="/admin-dashboard/users"
             className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
           >
             <FaUsers className="text-xl mb-1" />
@@ -31,7 +34,7 @@ const AdminSidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/orders"
+            to="/admin-dashboard/orders"
             className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
           >
             <FaTasks className="text-xl mb-1" />
@@ -39,7 +42,31 @@ const AdminSidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/settings"
+            to="/admin-dashboard/analytics"
+            className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
+          >
+            <FaChartBar className="text-xl mb-1" />
+            <span className="ml-4">Analytics</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin-dashboard/logs"
+            className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
+          >
+            <FaClipboardList className="text-xl mb-1" />
+            <span className="ml-4">Logs</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin-dashboard/reports"
+            className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
+          >
+            <FaFileAlt className="text-xl mb-1" />
+            <span className="ml-4">Reports</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin-dashboard/settings"
             className="flex items-center p-4 hover:bg-gray-700 transition-colors duration-300"
           >
             <FaCogs className="text-xl mb-1" />

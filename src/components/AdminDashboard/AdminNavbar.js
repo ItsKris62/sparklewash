@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const AdminNavbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const notifications = [
+    { id: 1, message: 'New order received: Order #1234' },
+    { id: 2, message: 'Order #5678 status updated to shipped' },
+    { id: 3, message: 'New plugin version available' },
+  ];
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <header className="w-full flex justify-between items-center p-4 bg-gray-900 text-white z-30">
-      {/* Admin Dashboard Title */}
+    <header className="w-full flex justify-between items-center p-4 bg-gray-900 text-white fixed top-0 left-0 z-30">
       <h1 className="text-2xl font-bold">Admin Dashboard</h1>
 
-      {/* Optional: You can add icons or additional features like notifications */}
       <div className="flex items-center space-x-4">
-        {/* Search Bar (Optional) */}
         <div className="relative text-gray-600">
           <input
             type="search"
@@ -27,11 +51,11 @@ const AdminNavbar = () => {
           </button>
         </div>
 
-        {/* Notification Icon */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             type="button"
-            className="bg-gray-800 p-2 rounded-full text-white hover:bg-gray-700"
+            onClick={toggleDropdown}
+            className="bg-gray-800 p-2 rounded-full text-white hover:bg-gray-700 focus:outline-none"
           >
             <svg
               className="h-6 w-6"
@@ -49,11 +73,25 @@ const AdminNavbar = () => {
             </svg>
           </button>
 
-          {/* Notification Count */}
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-50">
+              <ul className="max-h-60 overflow-y-auto">
+                {notifications.length > 0 ? (
+                  notifications.map(notification => (
+                    <li key={notification.id} className="p-2 border-b hover:bg-gray-100">
+                      {notification.message}
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-2 text-gray-500">No notifications</li>
+                )}
+              </ul>
+            </div>
+          )}
+
           <span className="absolute top-0 right-0 inline-block w-2.5 h-2.5 bg-red-600 rounded-full" />
         </div>
 
-        {/* Admin Profile (Optional) */}
         <div className="flex items-center space-x-2">
           <span>Admin</span>
           <img

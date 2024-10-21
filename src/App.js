@@ -1,4 +1,3 @@
-// src/App.js
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -9,21 +8,22 @@ import Orders from './pages/OrderPage';
 import ProfileManagement from './pages/ProfileManagement';
 import AdminDashboard from './pages/AdminDashboard'; 
 import Footer from './layouts/Footer'; // Footer for non-dashboard pages
-import AdminUserMgmnt from './components/AdminDashboard/AdminUserMgmnt'; // Ensure this path is correct
-import AdminOrders from './components/AdminDashboard/AdminOrders'; // Ensure this path is correct
-import AdminSettings from './components/AdminDashboard/AdminSettings'; // Ensure this path is correct
-import AdminServices from './components/AdminDashboard/AdminServices'; // Ensure this path is correct
-import AdminDashboardHome from './pages/AdminDashboard'; // Optional landing component for admin dashboard
+
+import AdminUsers from './components/AdminDashboard/AdminUsers'; 
+import AdminOrders from './components/AdminDashboard/AdminOrders'; 
+import AdminSettings from './components/AdminDashboard/AdminSettings';
+import AdminServices from './components/AdminDashboard/AdminServices'; 
+import AdminAnalytics from './components/AdminDashboard/AdminAnalytics'; // Import Analytics
+import AdminLogs from './components/AdminDashboard/AdminLogs'; // Import Logs
+import AdminReports from './components/AdminDashboard/AdminReports'; // Import Reports 
+import Dashboard from './components/AdminDashboard/Dashboard'; // Import Dashboard
 
 function App() {
   const location = useLocation();
 
   // Define routes for user and admin dashboards
-  const userDashboardRoutes = ['/user-dashboard', '/orders', '/profile'];
-  const adminDashboardRoutes = ['/admin-dashboard/*']; // Catch-all for admin dashboard
-
-  const isUserDashboard = userDashboardRoutes.includes(location.pathname);
-  const isAdminDashboard = adminDashboardRoutes.some(route => location.pathname.startsWith(route));
+  const isUserDashboard = location.pathname.startsWith('/user-dashboard');
+  const isAdminDashboard = location.pathname.startsWith('/admin-dashboard');
 
   return (
     <div className="App">
@@ -39,11 +39,15 @@ function App() {
 
         {/* Admin dashboard routes */}
         <Route path="/admin-dashboard/*" element={<AdminDashboard />}>
-          <Route index element={<AdminDashboardHome />} /> {/* Optional: Default landing page for Admin */}
-          <Route path="admin-users" element={<AdminUserMgmnt />} />
-          <Route path="admin-orders" element={<AdminOrders />} />
-          <Route path="admin-settings" element={<AdminSettings />} />
-          <Route path="admin-services" element={<AdminServices />} />
+          <Route index element={<Dashboard />} /> {/* Default landing page for Admin */}
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="services" element={<AdminServices />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="logs" element={<AdminLogs />} />
+          <Route path="reports" element={<AdminReports />} />
+          {/* Add any other admin routes here */}
         </Route>
       </Routes>
 

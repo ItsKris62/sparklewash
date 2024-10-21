@@ -46,36 +46,37 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="flex">
-      <SideNav userName="Current User" onLogout={handleLogout} /> {/* Pass user name and logout handler */}
+    <div className="flex bg-gray-100 min-h-screen">
+      <SideNav userName="Current User" onLogout={handleLogout} />
 
-      {/* Main content section with added left padding */}
-      <div className="flex-1 p-6 ml-64">
+      {/* Main content section */}
+      <div className="flex-1 p-8 ml-64">
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Total Orders Card */}
-          <div className="bg-white text-navy p-6 rounded-lg shadow-md flex items-center justify-between">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between transition-transform transform hover:scale-105">
             <div>
-              <h3 className="text-lg font-semibold mb-2">Total Orders</h3>
-              <p className="text-3xl font-bold text-yellow-400">{totalOrders}</p>
+              <h3 className="text-lg font-semibold text-gray-700">Total Orders</h3>
+              <p className="text-3xl font-extrabold text-blue-600">{totalOrders}</p>
             </div>
-            <FaShoppingCart className="text-blue-600 text-4xl" />
+            <FaShoppingCart className="text-blue-600 text-5xl" />
           </div>
 
           {/* Points Gained Card */}
-          <div className="bg-white text-navy p-6 rounded-lg shadow-md flex items-center justify-between">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between transition-transform transform hover:scale-105">
             <div>
-              <h3 className="text-lg font-semibold mb-2">Points Gained</h3>
-              <p className="text-3xl font-bold text-yellow-400">{points}</p>
+              <h3 className="text-lg font-semibold text-gray-700">Points Gained</h3>
+              <p className="text-3xl font-extrabold text-blue-600">{points}</p>
             </div>
-            <FaStar className="text-blue-600 text-4xl" />
+            <FaStar className="text-blue-600 text-5xl" />
           </div>
         </div>
 
-        {/* Available Services */}
-        <h2 className="text-2xl font-bold mb-4">Available Services</h2>
+        {/* Available Services Section */}
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Available Services</h2>
         <ServicesSection services={services} onCheckout={handleCheckout} />
 
+        {/* Service Modal */}
         {selectedService && (
           <ServiceModal
             service={selectedService}
