@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+// src/App.js
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -6,54 +7,49 @@ import Services from './pages/Services';
 import UserDashboard from './pages/UserDashboard';
 import Orders from './pages/OrderPage';
 import ProfileManagement from './pages/ProfileManagement';
-import AdminDashboard from './pages/AdminDashboard'; 
-import Footer from './layouts/Footer'; // Footer for non-dashboard pages
-
-import AdminUsers from './components/AdminDashboard/AdminUsers'; 
-import AdminOrders from './components/AdminDashboard/AdminOrders'; 
-import AdminSettings from './components/AdminDashboard/AdminSettings';
-import AdminServices from './components/AdminDashboard/AdminServices'; 
-import AdminAnalytics from './components/AdminDashboard/AdminAnalytics'; // Import Analytics
-import AdminLogs from './components/AdminDashboard/AdminLogs'; // Import Logs
-import AdminReports from './components/AdminDashboard/AdminReports'; // Import Reports 
-import Dashboard from './components/AdminDashboard/Dashboard'; // Import Dashboard
-import AdminLogin from './components/AdminDashboard/AdminLogin'; // Import the AdminLogin component
+import AdminDashboard from './pages/AdminDashboard';
+import Footer from './layouts/Footer';
+import SideNav from './layouts/SideNav';
+import NotFoundPage from './pages/NotFound';
+import { UserProvider } from './components/context/UserContext';
+import AdminLogin from './components/AdminDashboard/AdminLogin'; // Import AdminLogin component
+import { AuthProvider, useAuth } from './components/context/AuthContext'; // Corrected import
 
 function App() {
   const location = useLocation();
+  const { setUser } = useAuth(); // Replacing useUser with useAuth
 
-  // Define routes for user and admin dashboards
   const isUserDashboard = location.pathname.startsWith('/user-dashboard');
   const isAdminDashboard = location.pathname.startsWith('/admin-dashboard');
 
+  // Logout function to clear auth context
+  const handleLogout = () => {
+    setUser({ firstName: '', lastName: '', token: null });
+  };
+
   return (
     <div className="App">
-      {/* Conditionally render routes */}
+      {isUserDashboard && <SideNav onLogout={handleLogout} />}
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/profile" element={<ProfileManagement />} />
+        
+        {/* Protected Routes for User and Admin Dashboards */}
+        <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfileManagement /></ProtectedRoute>} />
+        <Route path="/admin-dashboard/*" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        
+        {/* Add route for Admin Login */}
+        <Route path="/admin-login" element={<AdminLogin />} />
 
-        {/* Admin dashboard routes */}
-        <Route path="/admin-dashboard/*" element={<AdminDashboard />}>
-          <Route index element={<Dashboard />} /> {/* Default landing page for Admin */}
-          <Route path="users" element={<AdminUsers />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="settings" element={<AdminSettings />} />
-          <Route path="services" element={<AdminServices />} />
-          <Route path="analytics" element={<AdminAnalytics />} />
-          <Route path="logs" element={<AdminLogs />} />
-          <Route path="reports" element={<AdminReports />} />
-         
-          {/* Add any other admin routes here */}
-        </Route>
+        {/* Catch-all route for 404 Not Found */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
-      {/* Conditionally render the footer */}
       {!isUserDashboard && !isAdminDashboard && <Footer />}
     </div>
   );
@@ -62,9 +58,21 @@ function App() {
 function AppWrapper() {
   return (
     <Router>
-      <App />
+      <AuthProvider>
+        <UserProvider>
+        <App />
+        </UserProvider>
+      </AuthProvider>
     </Router>
   );
 }
 
 export default AppWrapper;
+
+// ProtectedRoute Component to handle route protection based on authentication
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  
+  // Redirect to login if the user is not authenticated
+  return user?.token ? children : <Navigate to="/login" />;
+}

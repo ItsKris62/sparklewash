@@ -1,103 +1,86 @@
+// src/pages/Login.js
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Link } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { useAuth } from '../components/context/AuthContext';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-    const [showOverlay, setShowOverlay] = useState(false);
-    const [contact, setContact] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    const handleLogin = () => {
-        // Static credentials (replace with your preferred credentials)
-        const staticCredentials = {
-            contact: 'admin@example.com', // Example email
-            password: 'password123', // Example password
-        };
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-        // Check if the entered credentials match static credentials
-        if (contact === staticCredentials.contact && password === staticCredentials.password) {
-            // Redirect to the admin dashboard on successful login
-            navigate('/admin-dashboard'); // Adjust the path to your actual admin dashboard route
-        } else {
-            alert('Invalid credentials. Please try again.');
+        try {
+            await login(email, password);
+            toast.success("Login successful! Redirecting...");
+            navigate('/user-dashboard');
+        } catch (error) {
+            const errorMsg = error.message || 'Invalid credentials. Please try again.';
+            toast.error(errorMsg);
         }
     };
 
-    const handleSSO = () => {
-        console.log("Single Sign-On initiated with contact:", contact);
-        setShowOverlay(false);
-    };
+    const handleBack = () => navigate(-1);
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-[#004080] to-[#005f8e]">
+            <button className="absolute top-5 left-5 text-white hover:text-gray-300" onClick={handleBack}>
+                <FaArrowLeft size={20} />
+            </button>
             <h1 className="text-4xl font-bold text-white mb-5">Login</h1>
-            <form className="bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-4 w-full max-w-md">
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contact">
-                        Email Address or Contact
-                    </label>
-                    <input 
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="contact" 
-                        type="text" 
-                        placeholder="Email or Contact Number" 
-                        value={contact}
-                        onChange={(e) => setContact(e.target.value)}
+            <form className="bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-4 w-full max-w-md" onSubmit={handleLogin}>
+                <div className="relative mb-6">
+                    <FaEnvelope className="absolute left-3 top-3 text-gray-400 transition-all duration-200" />
+                    <input
+                        className="peer shadow appearance-none border rounded w-full py-3 pl-10 pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-[#005f8e]"
+                        type="text"
+                        required
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                        Password
-                    </label>
-                    <input 
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                        id="password" 
-                        type="password" 
-                        placeholder="Password" 
+
+                <div className="relative mb-6">
+                    <FaLock className="absolute left-3 top-3 text-gray-400 transition-all duration-200" />
+                    <input
+                        className="peer shadow appearance-none border rounded w-full py-3 pl-10 pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-[#005f8e]"
+                        type="password"
+                        required
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button 
+
+                <button
                     className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300"
-                    type="button" 
-                    onClick={handleLogin}> {/* Call handleLogin on click */}
+                    type="submit"
+                >
                     Login
                 </button>
-                <div className="mt-4 text-center">
-                    <button 
-                        className="text-[#005f8e] hover:text-[#0077a6] transition duration-300" 
-                        type="button" 
-                        onClick={() => setShowOverlay(true)}>
-                        Use Single Sign-On
-                    </button>
+                
+                {/* Link to Signup Page */}
+                <div className="text-center mt-4">
+                    <p className="text-gray-600">
+                        Don't have an account?{" "}
+                        <Link to="/register" className="text-blue-600 hover:underline">
+                            Sign up
+                        </Link>
+                    </p>
+                    <p className="text-gray-600 mt-2">
+                        <Link to="/" className="text-blue-600 hover:underline">
+                            Back to Home
+                        </Link>
+                    </p>
                 </div>
             </form>
-
-            {showOverlay && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-1/3">
-                        <h2 className="text-lg font-bold mb-4">Enter your Email for SSO</h2>
-                        <input 
-                            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4" 
-                            type="email" 
-                            placeholder="Email" 
-                            value={contact}
-                            onChange={(e) => setContact(e.target.value)}
-                        />
-                        <button 
-                            className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300" 
-                            onClick={handleSSO}>
-                            Submit
-                        </button>
-                        <button 
-                            className="text-red-500 mt-4 hover:text-red-700 transition duration-300" 
-                            onClick={() => setShowOverlay(false)}>
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

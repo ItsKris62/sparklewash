@@ -1,7 +1,12 @@
 import { useState } from 'react';
 
-const OrderList = ({ orders, onSelectOrder }) => {
-  const [filter, setFilter] = useState('weekly'); // Default filter: weekly
+const OrderList = ({ orders, onSelectOrder, onFilterChange }) => {
+  const [filter, setFilter] = useState('weekly'); // Default filter
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+    onFilterChange(e.target.value);
+  };
 
   return (
     <div className="mb-8">
@@ -10,7 +15,7 @@ const OrderList = ({ orders, onSelectOrder }) => {
         <select
           className="border border-gray-300 p-2 rounded-lg"
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          onChange={handleFilterChange}
         >
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
@@ -42,7 +47,7 @@ const OrderList = ({ orders, onSelectOrder }) => {
               <td className={`p-2 border ${order.status === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>{order.status}</td>
               <td className="p-2 border">{order.transactionType}</td>
               <td className="p-2 border">{order.transactionReference}</td>
-              <td className="p-2 border">{order.date}</td>
+              <td className="p-2 border">{new Date(order.date).toLocaleDateString()}</td>
               <td className="p-2 border">${order.amount.toFixed(2)}</td>
             </tr>
           ))}

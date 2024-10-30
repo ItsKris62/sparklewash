@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const Footer = () => {
   return (
@@ -105,6 +106,12 @@ const Footer = () => {
             </button>
           </div>
         </div>
+        {/* Add Admin Login Link */}
+        <p className="mt-4">
+          <Link to="/admin-login" className="text-blue-500 hover:underline">
+            Admin Login
+          </Link>
+        </p>
         <p className="mt-4">© {new Date().getFullYear()} Clean Slate. All rights reserved.</p>
       </div>
     </footer>

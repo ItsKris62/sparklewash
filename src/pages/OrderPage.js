@@ -1,84 +1,69 @@
-import React, { useState } from 'react';
-import SideNav from '../layouts/SideNav'; // Importing SideNav
+// src/pages/OrdersPage.js
+import React, { useState, useEffect, useCallback } from 'react';
+import SideNav from '../layouts/SideNav';
 import SearchBar from '../components/SearchBar';
-import OrderCard from '../components/OrderCard';
 import OrderList from '../components/OrderList';
 import OrderDetailCard from '../components/OrderDetailCard';
+import { useUser } from '../components/context/UserContext';
 
 const OrdersPage = () => {
-  const [orders, setOrders] = useState([
-    {
-      invoiceNumber: 'INV12345',
-      serviceType: 'Airbnb Cleaning',
-      status: 'Completed',
-      transactionType: 'Credit Card',
-      transactionReference: 'TXN98765',
-      date: '2024-10-04',
-      amount: 150.75,
-      additionalServices: ['Bed Sheets Cleaning', 'Carpet Cleaning'],
-      subtotal: 130,
-      shipping: 10,
-      tax: 10.75,
-      total: 150.75,
-      shippingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
-      billingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
-      paymentInfo: { method: 'Visa', transactionId: 'TXN98765' }
-    },
-    {
-      invoiceNumber: 'INV12346',
-      serviceType: 'Landscaping Services',
-      status: 'Pending',
-      transactionType: 'M-Pesa',
-      transactionReference: 'SJ123456ABC',
-      date: '2024-10-06',
-      amount: 350.75,
-      additionalServices: ['Lawn Mowing', 'Weeds removal'],
-      subtotal: 340,
-      shipping: 0.0,
-      tax: 10.75,
-      total: 350.75,
-      shippingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
-      billingInfo: { name: 'John Doe', address: '123 Main St', city: 'Somewhere', state: 'NY', zip: '10001' },
-      paymentInfo: { method: 'MPESA', transactionId: 'SJ123456ABC' }
-    },
-    // Add more mock orders here
-  ]);
-
+  const { user } = useUser();
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState('weekly');
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    // Add search filtering logic here
-  };
+  const applyFilters = useCallback((ordersData) => {
+    let filtered = ordersData;
 
-  const handleCreateNewOrder = () => {
-    console.log('Create New Order');
-  };
+    if (searchTerm) {
+      filtered = filtered.filter(order => 
+        order.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
-  const handleSelectOrder = (order) => {
-    setSelectedOrder(order);
-  };
+    const now = new Date();
+    filtered = filtered.filter(order => {
+      const orderDate = new Date(order.date);
+      if (filter === 'weekly') {
+        const oneWeekAgo = new Date(now);
+        oneWeekAgo.setDate(now.getDate() - 7);
+        return orderDate >= oneWeekAgo;
+      } else if (filter === 'monthly') {
+        return orderDate.getMonth() === now.getMonth() && orderDate.getFullYear() === now.getFullYear();
+      } else if (filter === 'yearly') {
+        return orderDate.getFullYear() === now.getFullYear();
+      }
+      return true;
+    });
+
+    setFilteredOrders(filtered);
+  }, [searchTerm, filter]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const response = await fetch(`http://localhost:5000/api/orders/${user._id}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const data = await response.json();
+      applyFilters(data); // Apply filters immediately to the fetched data
+    };
+    fetchOrders();
+  }, [user, applyFilters]);
+
+  const handleSearch = (term) => setSearchTerm(term);
+  const handleFilterChange = (newFilter) => setFilter(newFilter);
+
+  const handleSelectOrder = (order) => setSelectedOrder(order);
 
   return (
     <div className="flex min-h-screen">
-      <SideNav userName="John Doe" /> {/* SideNav added here */}
-      <div className="p-6 ml-64 w-full"> {/* Adding margin-left to avoid overlap */}
+      <SideNav />
+      <div className="p-6 ml-64 w-full">
         <SearchBar onSearch={handleSearch} />
-
-        <div className="mb-8">
-          <OrderCard onCreateNewOrder={handleCreateNewOrder} />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <OrderList orders={orders} onSelectOrder={handleSelectOrder} />
-          </div>
-
-          <div>
-            <OrderDetailCard order={selectedOrder} />
-          </div>
-        </div>
+        <OrderList orders={filteredOrders} onSelectOrder={handleSelectOrder} onFilterChange={handleFilterChange} />
+        <OrderDetailCard order={selectedOrder} />
       </div>
     </div>
   );

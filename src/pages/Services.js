@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../layouts/Header'; // Import the Header component
-import serviceImage1 from '../assets/images/professional-ironing-service.jpg'; // Ironing Service
+import serviceImage1 from '../assets/images/ironing_shirts.jpg'; // Ironing Service
 import serviceImage2 from '../assets/images/dry-cleaning.jpg'; // Dry Cleaning Service
 import serviceImage3 from '../assets/images/carpet-cleaning.jpg'; // Carpet Cleaning Service
 import serviceImage4 from '../assets/images/house-cleaning.jpg'; // Airbnb Cleaning Service

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Use useNavigate for navigation
-import serviceImage1 from '../assets/images/ironbox.jpg';
+import serviceImage1 from '../assets/images/ironing_shirts.jpg';
 import serviceImage2 from '../assets/images/stack-t-shirt-polo.jpg';
 import serviceImage3 from '../assets/images/still-life-cleaning-tools (1).jpg';
 import serviceImage4 from '../assets/images/cleaning.jpg';
