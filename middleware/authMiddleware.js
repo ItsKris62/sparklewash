@@ -1,49 +1,46 @@
-// middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const asyncHandler = require('express-async-handler');
+const { ApiError } = require('./errorMiddleware');
 
-// Protect routes middleware
-const protect = asyncHandler(async (req, res, next) => {
-  let token;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+const protect = async (req, res, next) => {
     try {
-      // Extract token from header
-      token = req.headers.authorization.split(' ')[1];
+        let token;
 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+            token = req.headers.authorization.split(' ')[1];
 
-      // Attach user to request, excluding password
-      req.user = await User.findById(decoded.id).select('-password');
-      if (!req.user) {
-        res.status(401);
-        throw new Error('User not found');
-      }
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select('-password');
 
-      next();
+            if (!req.user) {
+                throw new ApiError(401, 'Not authorized, user not found');
+            }
+
+            if (req.user.status !== 'active') {
+                throw new ApiError(401, 'Account is not active');
+            }
+
+            next();
+        } else {
+            throw new ApiError(401, 'Not authorized, no token');
+        }
     } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized, token failed');
+        if (error.name === 'JsonWebTokenError') {
+            next(new ApiError(401, 'Not authorized, invalid token'));
+        } else if (error.name === 'TokenExpiredError') {
+            next(new ApiError(401, 'Not authorized, token expired'));
+        } else {
+            next(error);
+        }
     }
-  } else {
-    res.status(401);
-    throw new Error('Not authorized, no token');
-  }
-});
+};
 
-// Admin role validation middleware
 const admin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
-    next();
-  } else {
-    res.status(403);
-    throw new Error('Not authorized as admin');
-  }
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        next(new ApiError(403, 'Not authorized as admin'));
+    }
 };
 
 module.exports = { protect, admin };

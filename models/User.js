@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     countryCode: { type: String },
     contact: { type: String },
+    points: { type: Number, default: 0 }, // Add points field
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' } // Default status set to "active"
 }, { timestamps: true });

@@ -27,10 +27,41 @@ exports.updateUserStatus = asyncHandler(async (req, res) => {
 
 // Get all orders with user information populated
 exports.getOrders = asyncHandler(async (req, res) => {
-  try {
-    const orders = await Order.find().populate('userId', 'firstName lastName email');
-    res.json(orders);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch orders' });
-  }
+  const orders = await Order.find().populate('userId', 'firstName lastName email');
+  res.json({ orders });
+});
+
+// Get total revenue
+exports.getTotalRevenue = asyncHandler(async (req, res) => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const revenue = await Order.aggregate([
+    { $match: { createdAt: { $gte: new Date(currentYear, currentMonth, 1) } } },
+    { $group: { _id: null, totalRevenue: { $sum: '$total' } } }
+  ]);
+
+  const previousRevenue = await Order.aggregate([
+    { $match: { createdAt: { $gte: new Date(currentYear, currentMonth - 1, 1), $lt: new Date(currentYear, currentMonth, 1) } } },
+    { $group: { _id: null, totalRevenue: { $sum: '$total' } } }
+  ]);
+
+  res.json({
+    totalRevenue: revenue[0]?.totalRevenue || 0,
+    previousMonthRevenue: previousRevenue[0]?.totalRevenue || 0
+  });
+});
+
+// Get new customers for the current and previous month
+exports.getNewCustomers = asyncHandler(async (req, res) => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  const newCustomers = await User.countDocuments({ createdAt: { $gte: new Date(currentYear, currentMonth, 1) } });
+  const previousNewCustomers = await User.countDocuments({ createdAt: { $gte: new Date(currentYear, currentMonth - 1, 1), $lt: new Date(currentYear, currentMonth, 1) } });
+
+  res.json({
+    newCustomersCount: newCustomers,
+    previousMonthNewCustomers: previousNewCustomers
+  });
 });

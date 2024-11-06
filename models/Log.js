@@ -1,32 +1,17 @@
-// models/Log.js
 const mongoose = require('mongoose');
 
-// Define the Log schema
 const logSchema = new mongoose.Schema({
-  timestamp: {
-    type: Date,
-    default: Date.now, // Automatically set the current date and time
-    required: true
+  user: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: false  // Make it optional since not all requests will be authenticated
   },
-  action: {
-    type: String,
-    required: true,
-    trim: true // Remove any trailing spaces
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to a User document
-    required: false // Optional field to log which user performed the action
-  },
-  // Any additional metadata for specific log entries can go here
-  metadata: {
-    type: Map,
-    of: String, // Stores additional key-value information if needed
-    required: false
-  }
+  action: { type: String, required: true },
+  path: { type: String, required: true },
+  method: { type: String, required: true },
+  description: { type: String },
+  timestamp: { type: Date, default: Date.now },
+  status: { type: Number }  // Make it optional since you might want to log before response
 });
 
-// Define the Log model
-const Log = mongoose.model('Log', logSchema);
-
-module.exports = Log;
+module.exports = mongoose.model('Log', logSchema);

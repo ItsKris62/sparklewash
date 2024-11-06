@@ -1,15 +1,20 @@
-// routes/adminRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, getOrders } = require('../controllers/adminController');
 const { protect, admin } = require('../middleware/authMiddleware');
+const {
+  getAllUsers,
+  updateUserStatus,
+  getOrders,
+  getTotalRevenue,
+  getNewCustomers
+} = require('../controllers/adminController');
 
-const { updateUserStatus } = require('../controllers/adminController'); // Add this import
+router.use(protect, admin);
 
-router.get('/users', protect, admin, getAllUsers); // GET all users
-router.get('/orders', protect, admin, getOrders); // GET all orders
-router.put('/users/:id/status', protect, admin, updateUserStatus); // Update user status
-
-
+router.get('/users', getAllUsers);
+router.put('/users/:id/status', updateUserStatus);
+router.get('/orders', getOrders);
+router.get('/total-revenue', getTotalRevenue);
+router.get('/new-customers', getNewCustomers);
 
 module.exports = router;

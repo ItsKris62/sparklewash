@@ -1,12 +1,21 @@
-// routes/orderRoutes.js
 const express = require('express');
-const { protect } = require('../middleware/authMiddleware');
-const { createOrder, getUserOrders } = require('../controllers/orderController');
 const router = express.Router();
+const { protect } = require('../middleware/authMiddleware');
+const {
+    createOrder,
+    getUserOrders,
+    getOrderById,
+    updateOrderStatus,
+    deleteOrder
+} = require('../controllers/orderController');
 
-router.post('/', protect, createOrder); // Use createOrder from controller
+// Protected routes - all routes require authentication
+router.use(protect);
 
-// New route to fetch user-specific orders
-router.get('/:userId', protect, getUserOrders); 
+// User routes
+router.post('/', createOrder);
+router.get('/:userId', getUserOrders); // Changed to match frontend request
+router.get('/order/:id', getOrderById);
+router.put('/:id', updateOrderStatus);
 
 module.exports = router;

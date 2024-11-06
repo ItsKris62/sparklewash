@@ -77,6 +77,14 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
+// Get Users Created in the Current Month
+exports.getNewCustomers = asyncHandler(async (req, res) => {
+  const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  
+  const users = await User.find({ createdAt: { $gte: startOfMonth } });
+  res.json({ newCustomers: users.length });
+});
+
 // @desc    Update user status (Admin only)
 // @route   PUT /api/admin/users/:id/status
 // @access  Private/Admin
