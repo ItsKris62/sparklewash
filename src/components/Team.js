@@ -3,8 +3,8 @@ import React from 'react';
 import TeamMember from './TeamMember';
 import avatar1 from '../assets/images/avatar1.png'; // avatar image path
 import avatar2 from '../assets/images/avatar1.png';
-import avatar3 from '../assets/images/avatar2.png';
-import avatar4 from '../assets/images/avatar2.png';
+import avatar3 from '../assets/images/avatar1.png';
+import avatar4 from '../assets/images/avatar1.png';
 
 // Social media icons (replace with appropriate icons from your library)
 const socialIcons = {

@@ -1,67 +1,62 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginOverlay from '../components/LoginOverlay';
-import RegisterOverlay from '../components/RegisterOverlay';
-import Logo from '../assets/images/logoTRANS.png'; // Make sure to import your logo image
+import RegisterOverlay from '../components/RegisterOverlay'; // Import the RegisterOverlay
+import Logo from '../assets/images/logoTRANS.png';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Header = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  
+
   const handleLoginClick = () => {
     setIsLoginOpen(true);
-  };
-
-  const handleCloseLogin = () => {
-    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
   };
 
   const handleRegisterClick = () => {
     setIsRegisterOpen(true);
+    setIsLoginOpen(false);
   };
 
-  const handleCloseRegister = () => {
+  const handleCloseOverlays = () => {
+    setIsLoginOpen(false);
     setIsRegisterOpen(false);
   };
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-20 bg-white bg-opacity-70 backdrop-blur-lg  rounded-b-2xl rounded-t-2xl">
-        <div className="container mx-auto flex justify-between items-center py-2 px-4"> {/* Adjusted padding here */}
+      <header className="fixed top-0 left-0 w-full z-20 bg-white bg-opacity-90 backdrop-blur-lg shadow-md">
+        <div className="container mx-auto flex justify-between items-center py-4 px-6">
           <div className="flex items-center">
-            <img src={Logo} alt="Clean Slate Logo" className="h-12 w-12 mr-2" /> {/* Reduced logo size */}
-            <h1 className="text-navy font-bold text-xl transition-colors duration-300 hover:text-yellow-500"> {/* Reduced font size */}
+            <img src={Logo} alt="Clean Slate Logo" className="h-10 w-10 mr-3" />
+            <h1 className="text-3xl font-playwrite text-navy hover:text-yellow-500 transition-colors">
               Clean Slate
             </h1>
           </div>
-          <nav className="space-x-3"> {/* Adjusted spacing */}
-            <Link to="/" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-1 border border-transparent hover:border-[#FFD700]"> {/* Adjusted padding */}
-              Home
-            </Link>
-            <Link to="/services" className="text-navy hover:text-[#FFD700] transition-all duration-300 rounded-md p-1 border border-transparent hover:border-[#FFD700]"> {/* Adjusted padding */}
-              Services
-            </Link>
+          <nav className="hidden md:flex space-x-6">
+            <Link to="/" className="text-lg text-navy hover:text-yellow-500 transition-colors">Home</Link>
+            <Link to="/services" className="text-lg text-navy hover:text-yellow-500 transition-colors">Services</Link>
           </nav>
-          <div className="flex space-x-3"> {/* Adjusted spacing */}
-            <button
-              className="relative px-4 py-1 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-navy bg-white border border-gray-200 shadow-sm gap-x-2"
-              onClick={handleLoginClick}
-            >
-              Login
-            </button>
-            <button
-              className="relative px-4 py-1 rounded-full bg-yellow-500 isolation-auto z-10 border-2 border-navy before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full hover:text-yellow-500 before:-right-full before:hover:right-0 before:rounded-full before:bg-navy before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700 inline-flex items-center justify-center text-sm font-semibold text-navy bg-white border border-gray-200 shadow-sm gap-x-2"
-              onClick={handleRegisterClick}
-            >
-              Signup
-            </button>
-          </div>
+          <button
+            onClick={handleLoginClick}
+            className="flex items-center space-x-2 text-white bg-blue-600 px-4 py-2 rounded-full hover:bg-blue-700 transition-all"
+          >
+            <FaUserCircle className="text-xl" />
+            <span>Login</span>
+          </button>
         </div>
       </header>
-
-      {/* Render Login and Register Overlay */}
-      <LoginOverlay isOpen={isLoginOpen} onClose={handleCloseLogin} />
-      <RegisterOverlay isOpen={isRegisterOpen} onClose={handleCloseRegister} />
+      <LoginOverlay 
+        isOpen={isLoginOpen} 
+        onClose={handleCloseOverlays} 
+        onSwitchToRegister={handleRegisterClick} // Pass the switch function
+      />
+      <RegisterOverlay 
+        isOpen={isRegisterOpen} 
+        onClose={handleCloseOverlays} 
+        onSwitchToLogin={handleLoginClick} // Pass the switch function
+      />
     </>
   );
 };

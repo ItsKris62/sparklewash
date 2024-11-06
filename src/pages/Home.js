@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Element } from 'react-scroll'; // Import Link and Element from react-scroll
-import Header from '../layouts/Header'; // Import the Header component
+import { Link, Element } from 'react-scroll';
+import Header from '../layouts/Header';
 import Hero from '../components/Hero';
 import Team from '../components/Team';
 import FAQSection from '../components/FAQSection';
@@ -9,10 +9,9 @@ import AboutUsSection from '../components/AboutUsSection';
 
 const Home = () => {
   return (
-    <div className="bg-[#F5F5DC]">
-      <Header /> {/* Add the Header component here */}
+    <div className="bg-gradient-to-b from-gray-100 to-gray-200">
+      <Header />
 
-      {/* Navigation Links */}
       <nav className="fixed top-0 right-0 p-4 bg-white shadow-md">
         <ul className="flex space-x-4">
           <li><Link to="hero" smooth={true} duration={500}>Home</Link></li>
@@ -23,20 +22,19 @@ const Home = () => {
         </ul>
       </nav>
 
-      {/* Sections with Element for smooth scrolling */}
-      <Element name="hero" className="element">
+      <Element name="hero">
         <Hero />
       </Element>
-      <Element name="about" className="element">
+      <Element name="about">
         <AboutUsSection />
       </Element>
-      <Element name="services" className="element">
+      <Element name="services">
         <FeaturedServices />
       </Element>
-      <Element name="faq" className="element">
+      <Element name="faq">
         <FAQSection />
       </Element>
-      <Element name="team" className="element">
+      <Element name="team">
         <div className="py-16">
           <div className="container mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Meet Our Team</h2>

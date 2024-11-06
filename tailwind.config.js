@@ -14,6 +14,7 @@ module.exports = {
           raleway: ['Raleway', 'sans-serif'],
           lato: ['Lato', 'sans-serif'],
           openSans: ['Open Sans', 'sans-serif'],
+          playwrite: ['Playwrite AU QLD', 'serif'], // Add Playwrite Australia QLD
         },
     },
   },

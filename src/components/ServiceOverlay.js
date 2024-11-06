@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const ServiceOverlay = ({ service, onClose }) => {
   const [details, setDetails] = useState({
     location: '',
-    rooms: '',
+    rooms: 1,
     fabrics: '',
     extras: [],
   });
@@ -25,25 +25,24 @@ const ServiceOverlay = ({ service, onClose }) => {
   const handleExtraChange = (extra) => {
     setDetails((prev) => {
       const { extras } = prev;
-      if (extras.includes(extra)) {
-        return { ...prev, extras: extras.filter((e) => e !== extra) };
-      }
-      return { ...prev, extras: [...extras, extra] };
+      return {
+        ...prev,
+        extras: extras.includes(extra)
+          ? extras.filter((e) => e !== extra)
+          : [...extras, extra],
+      };
     });
   };
 
   const handleSubmit = () => {
-    // Handle submission logic
     console.log('Service details:', details);
-    onClose();
+    onClose(details);
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg p-8 shadow-lg w-1/2">
         <h3 className="text-xl font-bold mb-4">Details for {service.name}</h3>
-
-        {/* Airbnb Cleaning Specific Details */}
         {service.name === 'Airbnb Cleaning Services' && (
           <>
             <div className="mb-4">
@@ -61,6 +60,7 @@ const ServiceOverlay = ({ service, onClose }) => {
               <input
                 type="number"
                 name="rooms"
+                min="1"
                 value={details.rooms}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg"
@@ -79,7 +79,6 @@ const ServiceOverlay = ({ service, onClose }) => {
           </>
         )}
 
-        {/* Extra Services */}
         <div className="mb-6">
           <h4 className="font-semibold text-lg mb-2">Extra Services</h4>
           <div className="grid grid-cols-2 gap-4">
@@ -97,18 +96,11 @@ const ServiceOverlay = ({ service, onClose }) => {
           </div>
         </div>
 
-        {/* Checkout Button */}
         <div className="flex justify-end space-x-4">
-          <button
-            className="bg-gray-400 text-white py-2 px-4 rounded-lg"
-            onClick={onClose}
-          >
+          <button className="bg-gray-400 text-white py-2 px-4 rounded-lg" onClick={onClose}>
             Cancel
           </button>
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-            onClick={handleSubmit}
-          >
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-lg" onClick={handleSubmit}>
             Checkout
           </button>
         </div>

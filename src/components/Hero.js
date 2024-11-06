@@ -1,20 +1,34 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../assets/images/drycleaners.jpg'; // Import your hero image
+import heroImage from '../assets/images/closeup-photo-shirts.jpg';
+// import heroImage from '../assets/images/drycleaners.jpg'; // Import your hero image
 
 const Hero = () => {
   const navigate = useNavigate(); // Initialize the navigate function
+
+  const [offsetY, setOffsetY] = useState(0);
+
+  const handleScroll = () => setOffsetY(window.pageYOffset);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleViewServices = () => {
     navigate('/services'); // Navigate to the services page
   };
 
+  
   return (
-    <section className="relative w-full h-screen bg-cover bg-center z-10" style={{ backgroundImage: `url(${heroImage})` }}>
+    <section className="relative w-full h-screen bg-cover bg-center z-10" 
+    style={{ backgroundImage: `url(${heroImage})` }}>
       <div className="flex items-center justify-center h-full bg-black bg-opacity-50 pt-30">
-        <div className="text-center text-[#FFD700] px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Clean Slate</h1>
-          <p className="text-lg md:text-xl mb-8">
+        <div className="text-center text-[#FFD700] px-4"
+        style={{ transform: `translateY(${offsetY * 0.2}px)` }} // Apply parallax effect
+        >
+          <h1 className="text-4xl md:text-6xl font-bold mb-4transition-transform duration-700 ease-out transform hover:scale-105">Welcome to Clean Slate</h1>
+          <p className="text-lg md:text-xl mb-8 opacity-90 hover:opacity-100 transition-opacity duration-500">
             Your one-stop solution for laundry and dry cleaning services. Experience convenience like never before!
           </p>
           <button onClick={handleViewServices} // Attach the click handler

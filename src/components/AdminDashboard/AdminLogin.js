@@ -1,80 +1,114 @@
-// src/components/AdminLogin.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Toast from '../ui/Toast';
-import { FaArrowLeft } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext'; // Use useAuth for adminLogin function
+import { Link, useNavigate } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaArrowLeft, FaHome, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import Toast from '../ui/Toast'; // Custom Toast component
 
 const AdminLogin = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [showToast, setShowToast] = useState(false);
-    const { adminLogin } = useAuth(); // Destructure adminLogin from useAuth
-    const navigate = useNavigate();
+  const { adminLogin } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [toastConfig, setToastConfig] = useState(null);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await adminLogin(email, password); // Use adminLogin for admin authentication
-            setShowToast(true);
-            setTimeout(() => {
-                setShowToast(false);
-                navigate('/admin-dashboard'); // Redirect to Admin Dashboard
-            }, 2000);
-        } catch (error) {
-            setError(error?.message || 'Invalid email or password');
-            setShowToast(true);
-        }
-    };
+  const showToast = (message, type) => {
+    setToastConfig({ message, type });
+  };
 
-    const handleCloseToast = () => {
-        setShowToast(false);
-        setError('');
-    };
+  const handleBack = () => {
+    navigate(-1);
+  };
 
-    const handleBack = () => navigate(-1);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      showToast('Please fill in all fields', 'error');
+      return;
+    }
 
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-gray-300 to-gray-200">
-            <div className="bg-white p-6 rounded-lg shadow-lg relative">
-                <button onClick={handleBack} className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <FaArrowLeft size={20} />
-                </button>
+    try {
+      await adminLogin(email, password);
+      showToast('Admin login successful!', 'success');
+      setTimeout(() => navigate('/admin-dashboard'), 1000); // Navigate after a short delay
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        showToast('Incorrect email or password', 'error');
+      } else if (error.response && error.response.status === 404) {
+        showToast('User not found', 'error');
+      } else {
+        showToast('Admin login failed. Please try again.', 'error');
+      }
+    }
+  };
 
-                <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            className="w-full p-2 border border-gray-300 rounded"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            className="w-full p-2 border border-gray-300 rounded"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-                        Login
-                    </button>
-                </form>
-                {showToast && <Toast message={error || "Login successful!"} onClose={handleCloseToast} />}
-            </div>
+  return (
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-[#004080] to-[#005f8e]">
+      <button className="absolute top-5 left-5 text-white hover:text-gray-300" onClick={handleBack}>
+        <FaArrowLeft size={20} />
+      </button>
+
+      <h1 className="text-4xl font-bold text-white mb-5">Admin Login</h1>
+
+      <form className="bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-4 w-full max-w-md" onSubmit={handleSubmit}>
+        <div className="relative mb-6">
+          <FaEnvelope className="absolute left-3 top-3 text-gray-400 transition-all duration-200" />
+          <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+            className="peer shadow appearance-none border rounded w-full py-3 pl-10 pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-[#005f8e]"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
-    );
+
+        <div className="relative mb-6">
+          <FaLock className="absolute left-3 top-3 text-gray-400 transition-all duration-200" />
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            placeholder="Password"
+            className="peer shadow appearance-none border rounded w-full py-3 pl-10 pr-12 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-[#005f8e]"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+
+        <button 
+          type="submit" 
+          className="bg-[#004080] hover:bg-[#005f8e] text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300"
+        >
+          Login
+        </button>
+
+        <div className="flex justify-center mt-4">
+          <Link to="/" className="flex items-center bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 rounded-full hover:from-blue-600 hover:to-indigo-600 transition ease-in-out duration-300">
+            <FaHome className="mr-2" />
+            Back to Home
+          </Link>
+        </div>
+      </form>
+
+      {/* Toast Notification */}
+      {toastConfig && (
+        <Toast
+          message={toastConfig.message}
+          type={toastConfig.type}
+          onClose={() => setToastConfig(null)}
+        />
+      )}
+    </div>
+  );
 };
 
 export default AdminLogin;

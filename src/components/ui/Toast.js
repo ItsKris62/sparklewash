@@ -1,8 +1,9 @@
 // src/ui/Toast.js
 
 import React, { useEffect } from 'react';
+import { FaCheckCircle, FaExclamationCircle, FaTimesCircle } from 'react-icons/fa';
 
-const Toast = ({ message, onClose }) => {
+const Toast = ({ message, type, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -11,10 +12,26 @@ const Toast = ({ message, onClose }) => {
     return () => clearTimeout(timer);
   }, [onClose]);
 
+  const getIcon = () => {
+    switch (type) {
+      case 'success':
+        return <FaCheckCircle className="text-green-500 text-2xl" />;
+      case 'error':
+        return <FaExclamationCircle className="text-red-500 text-2xl" />;
+      case 'info':
+      default:
+        return <FaTimesCircle className="text-blue-500 text-2xl" />;
+    }
+  };
+
   return (
-    <div className="fixed top-4 right-4 z-50 max-w-xs w-full rounded-lg shadow-lg bg-white border border-gray-200 p-4 transition-opacity duration-300 ease-in-out opacity-100">
+    <div className={`fixed top-4 right-4 z-50 max-w-xs w-full rounded-lg shadow-lg bg-white border p-4 
+      transition-transform transform ${type === 'success' ? 'border-green-500' : type === 'error' ? 'border-red-500' : 'border-blue-500'}
+      scale-105 animate-fadeIn`}
+    >
       <div className="flex items-center">
-        <div className="flex-grow">
+        {getIcon()}
+        <div className="ml-3 flex-grow">
           <p className="text-sm text-gray-700">{message}</p>
         </div>
         <button

@@ -1,21 +1,20 @@
-// This file can contain functions or mock data related to dashboard statistics:
+// src/data/dashboardData.js
+import axios from "axios";
 
-// data/dashboardData.js
+// Function to fetch total revenue
+export const getTotalRevenue = async () => {
+  const response = await axios.get("/api/orders/revenue");
+  return response.data.totalRevenue;
+};
 
-// Mock data for total revenue
-export const getTotalRevenue = () => {
-    return {
-      total: 150000,
-      month: 5000,
-    };
-  };
-  
-  // Mock data for recent orders
-  export const getRecentOrders = () => {
-    return [
-      { id: 1, customer: 'John Doe', amount: 150, status: 'Completed' },
-      { id: 2, customer: 'Jane Smith', amount: 200, status: 'Pending' },
-      { id: 3, customer: 'Mary Johnson', amount: 350, status: 'Completed' },
-      { id: 4, customer: 'James Brown', amount: 75, status: 'Cancelled' },
-    ];
-  };
+// Function to fetch recent orders
+export const getRecentOrders = async (filter = "all") => {
+  const response = await axios.get(`/api/orders/recent?filter=${filter}`);
+  return response.data.orders;
+};
+
+// Function to fetch new customers count for the current month
+export const getNewCustomers = async () => {
+  const response = await axios.get("/api/users/new-customers");
+  return response.data.newCustomers;
+};

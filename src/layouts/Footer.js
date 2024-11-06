@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const Footer = () => {
   return (
-    <footer className="bg-light-beige py-8">
+    <footer className="bg-light-beige py-8 mt-auto">
       <div className="container mx-auto text-navy text-center">
         <h3 className="text-2xl font-semibold mb-4">Clean Slate</h3>
         <p>Your trusted partner for laundry and dry cleaning services.</p>
@@ -108,7 +108,7 @@ const Footer = () => {
         </div>
         {/* Add Admin Login Link */}
         <p className="mt-4">
-          <Link to="/admin-login" className="text-blue-500 hover:underline">
+          <Link to="/admin/login" className="text-blue-500 hover:underline">
             Admin Login
           </Link>
         </p>

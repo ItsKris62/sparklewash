@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './components/context/AuthContext';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-
-export { default as Button } from './components/ui/Button';
-export { default as Table } from './components/ui/Table';
-export { default as Badge } from './components/ui/Badge';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

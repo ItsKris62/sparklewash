@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const FAQSection = () => {
   const [openFAQ, setOpenFAQ] = useState(null);
@@ -32,20 +33,26 @@ const FAQSection = () => {
 
   return (
     <section className="my-16">
-      <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
-      <div className="max-w-3xl mx-auto space-y-4">
+      <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
+      <div className="max-w-4xl mx-auto space-y-6">
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="border-b border-gray-300 py-4 cursor-pointer"
-            onClick={() => toggleFAQ(index)}
+            className={`border-b-2 ${openFAQ === index ? 'border-blue-500' : 'border-gray-300'} py-6`}
           >
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-700">{faq.question}</h3>
-              <span className="text-gray-700">{openFAQ === index ? '-' : '+'}</span>
+            <div
+              className="flex justify-between items-center cursor-pointer"
+              onClick={() => toggleFAQ(index)}
+            >
+              <h3 className="text-xl font-medium text-gray-800">{faq.question}</h3>
+              <span className="text-blue-500 transition-transform duration-300">
+                {openFAQ === index ? <FaChevronUp /> : <FaChevronDown />}
+              </span>
             </div>
             {openFAQ === index && (
-              <p className="mt-2 text-gray-600 transition-all duration-300">{faq.answer}</p>
+              <p className="mt-4 text-gray-600 transition-all duration-500 ease-in-out">
+                {faq.answer}
+              </p>
             )}
           </div>
         ))}

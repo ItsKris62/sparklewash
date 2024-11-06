@@ -2,44 +2,38 @@
 
 import React from "react";
 
-const Table = ({ children, className }) => {
-  return (
-    <div className={`overflow-x-auto ${className}`}>
-      <table className="min-w-full border-collapse bg-white">
-        <thead>
-          <tr className="bg-gray-100">
-            {React.Children.map(children, (child) =>
-              React.isValidElement(child) && child.type === TableHeader ? (
-                <th className="border px-4 py-2 text-left font-semibold">{child.props.children}</th>
-              ) : null
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {React.Children.map(children, (child) =>
-            React.isValidElement(child) && child.type === TableRow ? (
-              <tr>{child.props.children}</tr>
-            ) : null
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+const Table = ({ children, className }) => (
+  <div className={`overflow-x-auto ${className}`}>
+    <table className="min-w-full border-collapse bg-white">
+      {children}
+    </table>
+  </div>
+);
 
-const TableHeader = ({ children }) => {
-  return <>{children}</>;
-};
+const TableHeader = ({ children }) => (
+  <thead>
+    <tr className="bg-gray-100">
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child) ? (
+          <th className="border px-4 py-2 text-left font-semibold">{child.props.children}</th>
+        ) : null
+      )}
+    </tr>
+  </thead>
+);
 
-const TableRow = ({ children }) => {
-  return <tr className="border-b">{children}</tr>;
-};
+const TableBody = ({ children }) => <tbody>{children}</tbody>;
 
-const TableCell = ({ children, className = "" }) => {
-  return <td className={`border px-4 py-2 ${className}`}>{children}</td>;
-};
+const TableRow = ({ children }) => (
+  <tr className="border-b hover:bg-gray-50">{children}</tr>
+);
+
+const TableCell = ({ children, className = "" }) => (
+  <td className={`border px-4 py-2 ${className}`}>{children}</td>
+);
 
 Table.Header = TableHeader;
+Table.Body = TableBody;
 Table.Row = TableRow;
 Table.Cell = TableCell;
 
