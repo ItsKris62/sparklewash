@@ -5,6 +5,27 @@ const Order = require('../models/Order');
 const router = express.Router();
 const { admin, protect } = require('../middleware/authMiddleware');
 
+const getServiceRevenue = async (req, res) => {
+  try {
+    const revenueData = await Order.aggregate([
+      // Your aggregation logic here
+      {
+        $group: {
+          _id: "$service",
+          totalRevenue: { $sum: "$total" }
+        }
+      }
+    ]);
+    res.json(revenueData);
+  } catch (error) {
+    console.error('Error fetching service revenue:', error);
+    res.status(500).json({ error: 'Failed to fetch service revenue' });
+  }
+};
+
+router.get('/services-revenue', getServiceRevenue); // Route for service revenue data
+
+
 // GET /api/analytics - Fetch analytics data, including top services
 router.get('/', protect, admin, async (req, res) => {
   try {

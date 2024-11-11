@@ -10,3 +10,13 @@ exports.getNotifications = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch notifications' });
   }
 };
+
+// Clear notifications for a specific user
+exports.clearNotifications = async (req, res) => {
+  try {
+    await Notification.clearNotifications(req.user._id);
+    res.status(200).json({ message: 'Notifications cleared' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to clear notifications' });
+  }
+};

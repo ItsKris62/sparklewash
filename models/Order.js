@@ -6,6 +6,12 @@ const extraServiceSchema = new mongoose.Schema({
   price: { type: Number, required: true }
 });
 
+const orderLogSchema = new mongoose.Schema({
+  status: String,
+  changedAt: { type: Date, default: Date.now },
+  changedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+});
+
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   service: { type: String, required: true },
@@ -22,7 +28,8 @@ const orderSchema = new mongoose.Schema({
     default: 'Pending'
   },
   createdAt: { type: Date, default: Date.now }, // Tracks the creation time
-  modifiedAt: { type: Date, default: Date.now } // Tracks the last modification time
+  modifiedAt: { type: Date, default: Date.now }, // Tracks the last modification time
+  orderLogs: [orderLogSchema]
 });
 
 // Update modifiedAt every time the document is saved (except creation)

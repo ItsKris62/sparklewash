@@ -46,6 +46,11 @@ notificationSchema.statics.markAsRead = async function (id) {
     return await this.findByIdAndUpdate(id, { isRead: true }, { new: true });
 };
 
+// Add a clear notifications method
+notificationSchema.statics.clearNotifications = async function(userId) {
+    return await this.updateMany({ user: userId }, { isRead: true });
+  };
+
 // Model export
 const Notification = mongoose.model('Notification', notificationSchema);
 

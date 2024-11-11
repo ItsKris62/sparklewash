@@ -1,49 +1,49 @@
+// middleware/logMiddleware.js
 const Log = require('../models/Log');
 const logger = require('../utils/logger');
 
-const logAction = (action, description = '') => {
+const logAction = (action, type, description = '', metadata = {}) => {
     return async (req, res, next) => {
-        // Store the original end function
         const originalEnd = res.end;
         
-        // Create base log data
         const logData = {
             action,
+            type,                   // Type of log: 'user', 'order', or 'system'
             description,
             path: req.path,
             method: req.method,
-            timestamp: new Date()
+            timestamp: new Date(),
+            metadata
         };
 
-        // Override the end function
+        // override res.end to capture response after sending
         res.end = async function (chunk, encoding) {
-            // Restore the original end function
             res.end = originalEnd;
-            
             try {
-                // Add user if authenticated
-                if (req.user) {
-                    logData.user = req.user._id;
-                }
-                
-                // Add response status
+                if (req.user) logData.user = req.user._id;  // Attach user ID if available
                 logData.status = res.statusCode;
+                logData.metadata.ip = req.ip;
+                logData.metadata.browser = req.headers['user-agent'];
 
+                // Save log entry to database
                 const logEntry = new Log(logData);
                 await logEntry.save();
 
-                // Use Winston logger for console output
+                 // Save log to database
+        await Log.create(logData);
+
+                // Log to console using Winston for additional insight
                 logger.info(`${req.method} ${req.path} - Status: ${res.statusCode}`, {
                     user: req.user ? req.user._id : 'unauthenticated',
                     action,
-                    description
+                    description,
+                    type
                 });
 
             } catch (error) {
                 logger.error("Error saving log entry:", error);
             }
 
-            // Call the original end function
             return originalEnd.call(this, chunk, encoding);
         };
 

@@ -3,6 +3,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
+const logAction = require('../middleware/logMiddleware');
+const { ApiError } = require('../middleware/errorMiddleware')
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
@@ -11,9 +13,17 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).select('-password'); // Exclude password
   if (user) {
     res.json(user);
+
+    // Log action
+    logAction(
+      'User profile accessed',
+      'user',
+      `User ${req.user.id} accessed their profile`
+    )(req, res, () => {});
+
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new ApiError('User not found');
   }
 });
 
@@ -48,9 +58,16 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
       role: updatedUser.role,
       status: updatedUser.status,
     });
+
+    // Log profile update
+    logAction(
+      'User profile updated',
+      'user',
+      `User ${req.user.id} updated their profile`
+    )(req, res, () => {});    
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new ApiError('User not found');
   }
 });
 
@@ -63,9 +80,15 @@ exports.deleteUserAccount = asyncHandler(async (req, res) => {
   if (user) {
     await user.remove();
     res.json({ message: 'Account deleted successfully' });
+    // Log account deletion
+    logAction(
+      'User account deleted',
+      'user',
+      `User ${req.user.id} deleted their account`
+    )(req, res, () => {});
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new ApiError('User not found');
   }
 });
 
@@ -75,6 +98,13 @@ exports.deleteUserAccount = asyncHandler(async (req, res) => {
 exports.getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password'); // Exclude password for security
   res.json(users);
+
+  // Log action
+  logAction(
+    'All users fetched',
+    'system',
+    `Admin ${req.user.id} fetched all users`
+  )(req, res, () => {});
 });
 
 // Get Users Created in the Current Month
@@ -83,6 +113,12 @@ exports.getNewCustomers = asyncHandler(async (req, res) => {
   
   const users = await User.find({ createdAt: { $gte: startOfMonth } });
   res.json({ newCustomers: users.length });
+   // Log action
+   logAction(
+    'New customers fetched',
+    'system',
+    `Admin ${req.user.id} fetched new customers count`
+  )(req, res, () => {});
 });
 
 // @desc    Update user status (Admin only)
@@ -102,9 +138,15 @@ exports.updateUserStatus = asyncHandler(async (req, res) => {
       status: updatedUser.status,
       role: updatedUser.role,
     });
+    // Log status update
+    logAction(
+      'User status updated',
+      'user',
+      `Admin ${req.user.id} updated status of user ${user._id} to ${user.status}`
+    )(req, res, () => {});
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new ApiError('User not found');
   }
 });
 
@@ -117,8 +159,16 @@ exports.deleteUser = asyncHandler(async (req, res) => {
   if (user) {
     await user.remove();
     res.json({ message: 'User removed' });
+
+
+    // Log user deletion
+    logAction(
+      'User deleted',
+      'user',
+      `Admin ${req.user.id} deleted user ${user._id}`
+    )(req, res, () => {});
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new ApiError('User not found');
   }
 });

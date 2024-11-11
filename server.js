@@ -6,11 +6,15 @@ const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 // const { securityMiddleware } = require('./middleware/securityMiddleware'); // Security middleware commented out
 const logAction = require('./middleware/logMiddleware');
 // const limiter = require('./middleware/rateLimitMiddleware'); // Rate limiter middleware commented out
+const http = require('http');
+const { Server} = require('socket.io'); // Socket.io middleware, function to pass the io instance to the order controller
+const { initOrderController } = require('./controllers/orderController'); // OrderController middleware, integrate for real-time communication
 
 // Connect to MongoDB
 connectDB();
 
 const app = express();
+const server = http.createServer(app); // create HTTP server instance
 
 // CORS Configuration
 const corsOptions = {
@@ -25,6 +29,25 @@ const corsOptions = {
 
 // Apply CORS before other middleware
 app.use(cors(corsOptions));
+
+// Socket.io configuration
+const io = new Server(server, {
+    cors: {
+        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        methods: ['GET', 'POST', 'PUT']
+    }
+});
+
+// Initialize Socket.io
+io.on('connection', (socket) => {
+    console.log('New WebSocket connection');
+    socket.on('disconnect', () => {
+        console.log('WebSocket disconnected');
+    });
+});
+
+// Initialize order controller with io instance
+initOrderController(io);
 
 // Add headers middleware
 app.use((req, res, next) => {
@@ -45,6 +68,7 @@ app.use((req, res, next) => {
 // Body Parser
 app.use(express.json({ limit: '10kb' })); // Limit body size
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(logAction('API_REQUEST'));
 
 // Rate Limiter
 // app.use(limiter); // Commented out for testing
@@ -72,6 +96,10 @@ const orderRoutes = require('./routes/orderRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const analyticsRoutes = require('./routes/analyticsRoute');
 const pointsRoutes = require('./routes/pointsRoutes');
+const logRoutes = require('./routes/logRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const reportRoutes = require('./routes/reportsRoutes');
+
 
 // API Routes with specific logging
 app.use('/api/auth', logAction('AUTH_REQUEST'), authRoutes);
@@ -81,6 +109,10 @@ app.use('/api/orders', logAction('ORDER_REQUEST'), orderRoutes);
 app.use('/api/services', logAction('SERVICE_REQUEST'), serviceRoutes);
 app.use('/api/analytics', logAction('ANALYTICS_REQUEST'), analyticsRoutes);
 app.use('/api/points', logAction('POINTS_REQUEST'), pointsRoutes);
+app.use('/api/logs', logAction('LOGS_REQUEST'), logRoutes);
+app.use('/api/notifications', logAction('NOTIFICATION_REQUEST'), notificationRoutes);
+app.use('/api/reports', reportRoutes);
+
 
 // Error Handling Middleware
 app.use(errorHandler);
@@ -90,7 +122,7 @@ app.use(notFound);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
