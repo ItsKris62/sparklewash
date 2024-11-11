@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { MdPeople, MdShoppingCart, MdAttachMoney, MdPerson } from 'react-icons/md';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import ServiceOverviewCard from '../ServiceOverviewCard';
+import ServiceOverviewCard from '../ui/ServiceOverviewCard';
 
 const AdminAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState({
@@ -15,7 +15,7 @@ const AdminAnalytics = () => {
   });
   const { user } = useAuth();
 
-  // Fetch analytics data function with useCallback to memoize it
+  // Fetch analytics data function
   const fetchAnalyticsData = useCallback(async () => {
     try {
       const response = await axios.get('/api/analytics', {
@@ -28,13 +28,8 @@ const AdminAnalytics = () => {
   }, [user.token]);
 
   useEffect(() => {
-    // Initial fetch
     fetchAnalyticsData();
-
-    // Set up an interval to refresh the data every 30 seconds
     const intervalId = setInterval(fetchAnalyticsData, 30000); // 30 seconds
-
-    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, [fetchAnalyticsData]);
 
@@ -46,7 +41,6 @@ const AdminAnalytics = () => {
     <div className="bg-white p-8 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Analytics Overview</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Users Card */}
         <div className="bg-blue-50 p-4 rounded-lg shadow-lg flex items-center">
           <MdPeople className="text-blue-700 text-4xl mr-4" />
           <div className="text-center flex-1">
@@ -55,7 +49,6 @@ const AdminAnalytics = () => {
           </div>
         </div>
 
-        {/* Total Orders Card */}
         <div className="bg-green-50 p-4 rounded-lg shadow-lg flex items-center">
           <MdShoppingCart className="text-green-700 text-4xl mr-4" />
           <div className="text-center flex-1">
@@ -64,7 +57,6 @@ const AdminAnalytics = () => {
           </div>
         </div>
 
-        {/* Monthly Revenue Card */}
         <div className="bg-yellow-50 p-4 rounded-lg shadow-lg flex items-center">
           <MdAttachMoney className="text-yellow-700 text-4xl mr-4" />
           <div className="text-center flex-1">
@@ -73,7 +65,6 @@ const AdminAnalytics = () => {
           </div>
         </div>
 
-        {/* Active Users Card */}
         <div className="bg-red-50 p-4 rounded-lg shadow-lg flex items-center">
           <MdPerson className="text-red-700 text-4xl mr-4" />
           <div className="text-center flex-1">
@@ -90,8 +81,8 @@ const AdminAnalytics = () => {
           {(analyticsData.allServicesRevenue || []).map((service) => (
             <ServiceOverviewCard
               key={service._id}
-              serviceName={service._id}  // Service name from backend
-              revenue={service.revenue}   // Monthly revenue from backend
+              serviceName={service._id}  // Assuming _id is the service name
+              revenue={service.revenue}  // Monthly revenue from backend
             />
           ))}
         </div>

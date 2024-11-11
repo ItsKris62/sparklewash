@@ -21,6 +21,7 @@ const Login = () => {
     try {
       await login(email, password);
       toast.success('Login successful!');
+      navigate('/dashboard'); // Redirect on successful login
     } catch (error) {
       toast.error(error.message || 'Login failed. Please try again.');
     }

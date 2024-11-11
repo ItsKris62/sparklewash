@@ -1,9 +1,11 @@
+// src/pages/OrderPage.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNav from '../layouts/SideNav';
 import SearchBar from '../components/SearchBar';
 import OrderList from '../components/OrderList';
 import OrderDetailCard from '../components/OrderDetailCard';
+import BreadcrumbPagination from '../components/ui/BreadcrumbPagination';
 import { useAuth } from '../components/context/AuthContext';
 import { FaSync } from 'react-icons/fa';
 import axios from 'axios';
@@ -18,17 +20,16 @@ const OrderPage = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 7;
 
-  // Fetch orders from the backend
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      
       const response = await axios.get('/api/orders/user-orders', {
         headers: { Authorization: `Bearer ${user?.token}` }
       });
-      
       const ordersData = response.data;
       setOrders(ordersData);
       setFilteredOrders(ordersData);
@@ -36,12 +37,10 @@ const OrderPage = () => {
       console.error('Error fetching orders:', err);
       const errorMessage = err.response?.data?.message || 'Failed to fetch orders';
       setError(errorMessage);
-      
       if (err.response?.status === 401) {
         logout();
         navigate('/login');
       }
-      
       setOrders([]);
       setFilteredOrders([]);
     } finally {
@@ -50,33 +49,24 @@ const OrderPage = () => {
   }, [user?.token, logout, navigate]);
 
   useEffect(() => {
-    if (user?.token) {
-      fetchOrders();
-    }
+    if (user?.token) fetchOrders();
   }, [user?.token, fetchOrders]);
 
-  // Apply filters to orders
   const applyFilters = useCallback(() => {
     if (!orders.length) {
       setFilteredOrders([]);
       return;
     }
-
-    const now = new Date();
     const filtered = orders
-      .filter(order => {
-        const serviceName = order.service?.toLowerCase() || '';
-        return serviceName.includes(searchTerm.toLowerCase());
-      })
+      .filter(order => order.service?.toLowerCase().includes(searchTerm.toLowerCase()))
       .filter(order => {
         const orderDate = new Date(order.createdAt);
+        const now = new Date();
         switch (filter) {
           case 'weekly':
-            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-            return orderDate >= weekAgo;
+            return orderDate >= new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
           case 'monthly':
-            return orderDate.getMonth() === now.getMonth() && 
-                   orderDate.getFullYear() === now.getFullYear();
+            return orderDate.getMonth() === now.getMonth() && orderDate.getFullYear() === now.getFullYear();
           case 'yearly':
             return orderDate.getFullYear() === now.getFullYear();
           default:
@@ -84,7 +74,6 @@ const OrderPage = () => {
         }
       })
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
     setFilteredOrders(filtered);
   }, [orders, searchTerm, filter]);
 
@@ -100,20 +89,7 @@ const OrderPage = () => {
     setSelectedOrder(order);
   }, []);
 
-  const handleFilterChange = useCallback((newFilter) => {
-    setFilter(newFilter);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen bg-gray-50">
-        <SideNav />
-        <div className="flex-1 p-8 ml-64 flex justify-center items-center">
-          <div className="text-xl text-gray-600">Loading orders...</div>
-        </div>
-      </div>
-    );
-  }
+  const totalPages = Math.ceil(filteredOrders.length / rowsPerPage);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -123,12 +99,10 @@ const OrderPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
             <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="flex-1 md:flex-none">
-                <SearchBar onSearch={setSearchTerm} />
-              </div>
+              <SearchBar onSearch={setSearchTerm} />
               <button 
                 onClick={handleRefresh} 
-                className="p-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                className="p-2 rounded-md bg-navy text-white hover:bg-blue-600 transition-colors"
                 aria-label="Refresh orders"
               >
                 <FaSync className={loading ? 'animate-spin' : ''} />
@@ -142,19 +116,23 @@ const OrderPage = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 gap-6">
-            <OrderList 
-              orders={filteredOrders} 
-              onSelectOrder={handleSelectOrder} 
-              onFilterChange={handleFilterChange}
+          <OrderList 
+            orders={filteredOrders.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)} 
+            onSelectOrder={handleSelectOrder} 
+          />
+
+          <BreadcrumbPagination 
+            currentPage={currentPage} 
+            totalPages={totalPages} 
+            onPageChange={setCurrentPage} 
+          />
+
+          {selectedOrder && (
+            <OrderDetailCard 
+              order={selectedOrder} 
+              onClose={() => setSelectedOrder(null)}
             />
-            {selectedOrder && (
-              <OrderDetailCard 
-                order={selectedOrder} 
-                onClose={() => setSelectedOrder(null)}
-              />
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>

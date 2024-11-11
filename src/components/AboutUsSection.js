@@ -1,5 +1,5 @@
 import React from 'react';
-import aboutImage from '../assets/images/aboutus.png';
+import aboutVideo from '../assets/videos/dry_cleaning.mp4';
 
 const AboutUsSection = () => {
   return (
@@ -7,9 +7,16 @@ const AboutUsSection = () => {
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
         
         {/* Image Section */}
-        <div className="flex-1 md:order-2 flex justify-center mb-8 md:mb-0">
-          <img src={aboutImage} alt="About Us" className="w-full max-w-md rounded-lg shadow-2xl transition-transform duration-300 hover:scale-105" />
-        </div>
+        <div className="flex-1 md:order-3 flex justify-center mb-8 md:mb-0">
+        <video 
+            src={aboutVideo} 
+            alt="About Us" 
+            className="w-full max-w-2xl rounded-lg shadow-2xl" 
+            autoPlay 
+            loop 
+            muted 
+          />
+          </div>
         
         {/* Text Section */}
         <div className="flex-1 md:order-1 text-center md:text-left space-y-6">

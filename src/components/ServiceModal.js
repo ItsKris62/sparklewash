@@ -1,7 +1,6 @@
 // src/components/ServiceModal.js
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Toast from '../components/ui/Toast';
 import { useAuth } from '../components/context/AuthContext';
 
 /**
@@ -26,13 +25,9 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
   const [extraServices, setExtraServices] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('Pay on Delivery - MPESA');
   const { user } = useAuth();
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
-  /**
-   * Fetches additional services for the selected service from the server.
-   * Updates the component state with the additional services.
-   * If there's an error during the fetch, it logs the error to the console.
-   */
     const fetchExtras = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/services');
@@ -59,12 +54,6 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
     );
   };
 
-/**
- * Submits the order details to the server to create a new order.
- * It constructs the order details object with user inputs and sends a POST request.
- * On successful order creation, it triggers a success toast message, invokes the onSubmit callback with the order data,
- * and closes the modal. In case of an error during submission, it logs the error and shows an error toast message.
- */
   const handleSubmit = async () => {
     const orderDetails = {
       service: service.name,
@@ -89,15 +78,15 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
 
       if (response.ok) {
         const data = await response.json();
-        toast.success('Order created successfully!');
+        setToast({ message: 'Order created successfully!', type: 'success' });
         onSubmit(data);
         onClose();
       } else {
-        toast.error('Failed to create order');
+        setToast({ message: 'Failed to create order', type: 'error' });
       }
     } catch (error) {
       console.error('Error creating order:', error);
-      toast.error('Error creating order');
+      setToast({ message: 'Error creating order', type: 'error' });
     }
   };
 
@@ -106,7 +95,6 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
       <div className="bg-white p-6 rounded-xl max-w-lg w-full shadow-lg transition transform duration-300 ease-in-out overflow-auto">
-        
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           Enter details for {service.name}
         </h2>
@@ -200,6 +188,15 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
           </button>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

@@ -98,7 +98,7 @@ const AdminOrders = () => {
           order._id === orderId ? { ...order, status: newStatus } : order
         )
       );
-  
+      setShowOrderModal(false); // Close the modal
       setToastMessage({ type: 'success', message: 'Order status updated successfully.' });
     } catch (error) {
       console.error("Error updating status:", error);
@@ -115,17 +115,25 @@ const AdminOrders = () => {
         <Toast message={toastMessage.message} onClose={() => setToastMessage(null)} />
       )}
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:space-x-4 items-center mb-4">
         <Input
           type="search"
           placeholder="Search by customer name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-1/3"
+          className="w-full sm:w-1/4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-2 sm:mb-0"
         />
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
           {["All", "Pending", "In Progress", "Fulfilled", "On Hold", "Cancelled", "Failed"].map((status) => (
-            <Button key={status} onClick={() => setSelectedStatus(status)}>
+            <Button
+              key={status}
+              onClick={() => setSelectedStatus(status)}
+              className={`rounded-lg px-4 py-2 ${
+                selectedStatus === status
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
               {status}
             </Button>
           ))}
@@ -138,10 +146,12 @@ const AdminOrders = () => {
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
           </select>
-          <Button onClick={fetchOrders} 
-          className="bg-navy hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors duration-200 flex items-center gap-2 shadow-sm"
-          disabled={isRefreshing}>
-            <FaSync className= {isRefreshing ? "animate-spin" : ""} />
+          <Button 
+            onClick={fetchOrders} 
+            className="bg-navy hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors duration-200 flex items-center gap-2 shadow-sm"
+            disabled={isRefreshing}
+          >
+            <FaSync className={isRefreshing ? "animate-spin" : ""} />
           </Button>
         </div>
       </div>
@@ -176,7 +186,10 @@ const AdminOrders = () => {
                       color={
                         order.status === "Fulfilled" ? "bg-green-500" :
                         order.status === "Pending" ? "bg-yellow-500" :
-                        "bg-red-500"
+                        order.status === "In Progress" ? "bg-blue-500" :
+                        order.status === "On Hold" ? "bg-orange-500" :
+                        order.status === "Cancelled" ? "bg-red-500" :
+                        "bg-gray-500"
                       }
                     />
                   </td>
@@ -214,7 +227,12 @@ const AdminOrders = () => {
               ))}
             </select>
           </div>
-          <Button onClick={() => setShowOrderModal(false)} className="bg-blue-500 text-white mt-4">Close</Button>
+          <Button 
+            onClick={() => setShowOrderModal(false)} 
+            className="bg-blue-500 text-white mt-4"
+          >
+            Close
+          </Button>
         </Modal>
       )}
     </div>

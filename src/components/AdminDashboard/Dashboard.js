@@ -16,9 +16,10 @@ const Dashboard = () => {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [previousRevenue, setPreviousRevenue] = useState(0);
   const [recentOrders, setRecentOrders] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [points, setPoints] = useState(0);
   const [newCustomers, setNewCustomers] = useState(0);
   const [previousNewCustomers, setPreviousNewCustomers] = useState(0);
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,10 +32,16 @@ const Dashboard = () => {
         'Content-Type': 'application/json',
       };
       
-      const [revenueResponse, customersResponse, ordersResponse] = await Promise.all([
+      const [
+        revenueResponse, 
+        customersResponse, 
+        ordersResponse, 
+        pointsResponse
+      ] = await Promise.all([
         axios.get("http://localhost:5000/api/admin/total-revenue", { headers }),
         axios.get("http://localhost:5000/api/admin/new-customers", { headers }),
-        axios.get("http://localhost:5000/api/admin/orders", { headers })
+        axios.get("http://localhost:5000/api/admin/orders", { headers }),
+        axios.get("http://localhost:5000/api/admin/points", { headers })
       ]);
   
       setTotalRevenue(revenueResponse.data.totalRevenue);
@@ -42,6 +49,8 @@ const Dashboard = () => {
       setNewCustomers(customersResponse.data.newCustomersCount);
       setPreviousNewCustomers(customersResponse.data.previousMonthNewCustomers || 0);
       setRecentOrders(ordersResponse.data.orders || []);
+      setTotalOrders(ordersResponse.data.totalOrders || ordersResponse.data.orders.length);
+      setPoints(pointsResponse.data.totalPoints || 0);
   
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
@@ -77,6 +86,10 @@ const Dashboard = () => {
       );
     }
 
+    const sortedOrders = [...recentOrders]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 7);
+
     return (
       <Table className="w-full">
         <thead>
@@ -88,7 +101,7 @@ const Dashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {recentOrders.map(order => (
+          {sortedOrders.map(order => (
             <tr key={order._id}>
               <td className="border-b py-2">
                 {order.userId ? `${order.userId.firstName} ${order.userId.lastName}` : 'Unknown'}
@@ -129,8 +142,8 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-6 md:p-10 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl font-semibold mb-6">Dashboard</h2>
+    <div className="ml-2 mt-5 p-6 bg-white rounded-lg shadow-md min-h-screen">
+      <h2 className="text-2xl font-semibold mb-4">Dashboard</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card className="shadow-lg transition hover:shadow-xl">
@@ -149,23 +162,23 @@ const Dashboard = () => {
         <Card className="shadow-lg transition hover:shadow-xl">
           <CardHeader>
             <CardTitle>Total Orders</CardTitle>
-            <CardDescription>Orders made in the last month</CardDescription>
+            <CardDescription>Total orders placed</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center text-2xl font-bold text-blue-600">
-              {recentOrders.length}
-              {getIndicator(recentOrders.length, previousNewCustomers)}
+              {totalOrders}
+              {getIndicator(totalOrders, recentOrders.length)}
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-lg transition hover:shadow-xl">
           <CardHeader>
-            <CardTitle>Active Services</CardTitle>
-            <CardDescription>Available services offered</CardDescription>
+            <CardTitle>Total Points</CardTitle>
+            <CardDescription>Accumulated points</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">6</div>
+            <div className="text-2xl font-bold text-purple-600">{points}</div>
           </CardContent>
         </Card>
 
@@ -185,10 +198,7 @@ const Dashboard = () => {
 
       <Card className="shadow-lg transition hover:shadow-xl">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Recent Orders</CardTitle>
-            <Button size="sm">View All</Button>
-          </div>
+          <CardTitle>Recent Orders</CardTitle>
           <CardDescription>Latest transactions from today</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+// import Toast from '../ui/Toast'
 
 const AdminNavbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef(null);
 
   // Toggle dropdown for notifications
@@ -17,6 +19,7 @@ const AdminNavbar = () => {
       try {
         const { data } = await axios.get('http://localhost:5000/api/notifications'); // Ensure backend route
         setNotifications(data);
+        setUnreadCount(data.filter(notification => !notification.isRead).length);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
@@ -34,6 +37,13 @@ const AdminNavbar = () => {
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
+  };
+
+   // Mark notifications as read and clear unread count
+   const clearNotifications = () => {
+    setNotifications([]);
+    setUnreadCount(0);
+    setIsDropdownOpen(false);
   };
 
   // Close dropdown when clicking outside
@@ -89,14 +99,17 @@ const AdminNavbar = () => {
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118.6 14.6V11a7.003 7.003 0 00-5-6.708V3a2 2 0 10-4 0v1.292A7.003 7.003 0 004 11v3.6c0 .523-.214 1.025-.595 1.395L2 17h5m8 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
+            {unreadCount > 0 && (
+              <span className="absolute top-0 right-0 inline-block w-2.5 h-2.5 bg-red-600 rounded-full" />
+            )}
           </button>
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-navy rounded shadow-lg z-50">
               <ul className="max-h-60 overflow-y-auto">
                 {notifications.length > 0 ? (
-                  notifications.map(notification => (
-                    <li key={notification.id} className="p-2 border-b hover:bg-[#87CEEB]">
+                  notifications.map((notification) => (
+                    <li key={notification._id} className="p-2 border-b hover:bg-[#87CEEB]">
                       {notification.message}
                     </li>
                   ))
@@ -104,9 +117,16 @@ const AdminNavbar = () => {
                   <li className="p-2 text-gray-500">No notifications</li>
                 )}
               </ul>
+              {notifications.length > 0 && (
+                <button
+                  onClick={clearNotifications}
+                  className="w-full p-2 bg-red-500 text-white hover:bg-red-600 rounded-b"
+                >
+                  Clear Notifications
+                </button>
+              )}
             </div>
           )}
-          <span className="absolute top-0 right-0 inline-block w-2.5 h-2.5 bg-red-600 rounded-full" />
         </div>
 
         {/* Admin Profile */}
@@ -118,5 +138,6 @@ const AdminNavbar = () => {
     </header>
   );
 };
+
 
 export default AdminNavbar;

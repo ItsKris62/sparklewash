@@ -66,8 +66,8 @@ const FeaturedServices = () => {
     return (
         <section id="services" className="py-16 bg-gradient-to-b from-gray-100 to-gray-200">
             <div className="container mx-auto px-4 text-center">
-                <h2 className="text-4xl font-bold mb-8 text-gray-800">Our Featured Services</h2>
-                <p className="text-gray-600 mb-12 text-lg">Discover our top services designed to cater to your needs. Join us to enjoy personalized, quality service.</p>
+                <h2 className="text-4xl font-bold mb-8 text-navy md:text-left">Our Featured Services</h2>
+                <p className="text-blue-900 mb-12 text-lg md:text-left">Discover our top services designed to cater to your needs. Join us to enjoy personalized, quality service.</p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {servicesData.map((service) => (
@@ -116,7 +116,7 @@ const FeaturedServices = () => {
                         </div>
                         <p className="text-gray-500 mb-6">Sign in or sign up to request this service or place an order.</p>
                         <div className="flex justify-center space-x-4">
-                            <button onClick={handleLogin} className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition">
+                            <button onClick={handleLogin} className="bg-navy text-white py-2 px-6 rounded-full hover:bg-blue-600 transition">
                                 Sign In
                             </button>
                             <button onClick={handleSignUp} className="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-600 transition">

@@ -27,6 +27,8 @@ const LoginOverlay = lazy(() => import('./components/LoginOverlay'));
 const RegisterOverlay = lazy(() => import('./components/RegisterOverlay'));
 const Services = lazy(() => import('./pages/Services'));
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
+const AdminLogs = lazy(() => import('./components/AdminDashboard/AdminLogs'));
+
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -113,13 +115,14 @@ function App() {
           {/* Protected Admin Routes */}
           <Route element={<ProtectedAdminRoute />}>
             <Route element={<AdminLayout />}>
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
               <Route path="/admin-dashboard/orders" element={<AdminOrders />} />
               <Route path="/admin-dashboard/services" element={<AdminServices />} />
               <Route path="/admin-dashboard/settings" element={<AdminSettings />} />
               <Route path="/admin-dashboard/reports" element={<AdminReports />} />
               <Route path="/admin-dashboard/analytics" element={<AdminAnalytics />} />
               <Route path="/admin-dashboard/users" element={<AdminUsers />} />
+              <Route path="/admin-dashboard/logs" element={<AdminLogs />} />
             </Route>
           </Route>
 
