@@ -43,11 +43,11 @@ const AdminReports = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md max-w-7xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4">Reports Overview</h2>
 
       {/* Month Selector */}
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <label className="text-lg font-medium">Select Month:</label>
         <DatePicker
           selected={selectedMonth}

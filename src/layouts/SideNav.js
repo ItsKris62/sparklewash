@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo2trans.png';
-import { FaTachometerAlt, FaClipboardList, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaClipboardList, FaUserCircle, FaSignOutAlt, FaTruck  } from 'react-icons/fa';
 import { useAuth } from '../components/context/AuthContext';
 
 /**
@@ -41,6 +41,15 @@ const SideNav = () => {
             >
               <FaClipboardList className="mr-3 text-xl" />
               <span>Orders</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/order-tracking"
+              className="flex items-center py-3 px-4 text-lg text-gray-700 hover:bg-[#FFD700] hover:text-navy rounded-md transition duration-300"
+            >
+              <FaTruck className="mr-3 text-xl" />
+              <span>Order Tracking</span>
             </Link>
           </li>
           <li>

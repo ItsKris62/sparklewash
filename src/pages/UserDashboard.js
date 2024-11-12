@@ -4,7 +4,7 @@ import { useAuth } from '../components/context/AuthContext';
 import SideNav from '../layouts/SideNav';
 import ServicesSection from '../components/SevicesSection';
 import ServiceModal from '../components/ServiceModal';
-import { FaShoppingCart, FaStar } from 'react-icons/fa';
+import { FaShoppingCart, FaStar, FaTshirt, FaLeaf, FaBroom, FaSoap, FaSprayCan, FaUtensils, FaFireAlt } from 'react-icons/fa';
 import axios from 'axios';
 
 const UserDashboard = () => {
@@ -21,6 +21,17 @@ const UserDashboard = () => {
   const [services, setServices] = useState([]);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Icon mapping for each service
+  const serviceIcons = {
+    'Landscaping Service': <FaLeaf className="text-green-500 text-4xl" />,
+    'Laundry and Ironing Services': <FaFireAlt className="text-orange-500 text-4xl" />,
+    'Laundry Services': <FaSoap className="text-blue-500 text-6xl" />,
+    'Airbnb Cleaning Services': <FaBroom className="text-purple-500 text-4xl" />,
+    'Meal Prep Services': <FaUtensils className="text-red-500 text-4xl" />,
+    'Carpet Cleaning Services': <FaSprayCan className="text-indigo-500 text-4xl" />,
+    'Dry Cleaning Services': <FaTshirt className="text-cyan-500 text-5xl" />
+  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -174,7 +185,7 @@ const UserDashboard = () => {
 
         <h2 className="text-2xl font-bold mb-6 text-gray-700">Available Services</h2>
         <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-          <ServicesSection services={services} onCheckout={handleCheckout} />
+          <ServicesSection services={services} onCheckout={handleCheckout} icons={serviceIcons} />
         </div>
 
         {selectedService && (

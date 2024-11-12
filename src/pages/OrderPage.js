@@ -102,7 +102,7 @@ const OrderPage = () => {
               <SearchBar onSearch={setSearchTerm} />
               <button 
                 onClick={handleRefresh} 
-                className="p-2 rounded-md bg-navy text-white hover:bg-blue-600 transition-colors"
+                className="p-2 rounded-md text-navy transition-colors"
                 aria-label="Refresh orders"
               >
                 <FaSync className={loading ? 'animate-spin' : ''} />

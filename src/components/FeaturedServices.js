@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import serviceImage1 from '../assets/images/ironing_shirts.jpg';
-import serviceImage2 from '../assets/images/stack-t-shirt-polo.jpg';
-import serviceImage3 from '../assets/images/still-life-cleaning-tools (1).jpg';
-import serviceImage4 from '../assets/images/cleaning.jpg';
+import serviceImage2 from '../assets/images/Laundry-machines.jpg';
+import serviceImage3 from '../assets/images/house_cleaning.jpg';
+import serviceImage4 from '../assets/images/disinfecting-home.jpg';
 
 const servicesData = [
     {
         id: 1,
-        title: "Laundry Service",
+        title: "Laundry & Ironing",
         description: "Fast and reliable laundry service for all your needs. Our laundry service offers wash, dry, and fold options to suit your schedule and preferences.",
         image: serviceImage1,
         extraServices: ["Wash & Fold", "Ironing", "Stain Removal"],
@@ -29,7 +29,7 @@ const servicesData = [
     },
     {
         id: 4,
-        title: "AirBnb Cleaning Services",
+        title: "AirBnb Cleaning",
         description: "Expert AirBnb cleaning services to ensure that shine. We handle everything from laundry to inspection to keep your guests happy.",
         image: serviceImage4,
         extraServices: ["Restocking Supplies", "Laundry", "Inspection"],

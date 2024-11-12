@@ -6,9 +6,12 @@ import AdminNavbar from '../components/AdminDashboard/AdminNavbar';
 
 const AdminLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex bg-gray-100">
+      {/* Sidebar remains fixed to the left */}
       <AdminSidebar />
-      <div className="flex-1 min-h-screen bg-gray-100 ml-64">
+
+      {/* Main content area with navbar and outlet */}
+      <div className="flex flex-col flex-1 lg:ml-64 min-h-screen bg-gray-100"> 
         <AdminNavbar />
         <main className="p-6 pt-20">
           <Outlet />

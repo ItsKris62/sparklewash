@@ -22,7 +22,7 @@ const AdminSidebar = () => {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-gray-900 text-white shadow-lg transform transition-transform duration-300 md:translate-x-0">
+    <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-gray-900 text-white shadow-lg transform lg:translate-x-0 transition-transform duration-300">
       <div className="flex flex-col justify-between h-full px-4 py-6">
         
         {/* Logo and Title */}

@@ -9,10 +9,12 @@ import './App.css';
 
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
+const LearnMore = lazy(() => import('./pages/LearnMore'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 const OrderPage = lazy(() => import('./pages/OrderPage'));
+const OrderTrackingPage = lazy(() => import('./pages/OrderTrackingPage'));
 const ProfilePage = lazy(() => import('./pages/ProfileManagement'));
 const NotFoundPage = lazy(() => import('./pages/NotFound'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
@@ -100,6 +102,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<><Home /> <Footer /></>} />
+          <Route path="/learnmore" element={<><LearnMore /> <Footer /></>} />
           <Route path="/services" element={<><Services /> <Footer /></>} />
           <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
           <Route path="/register" element={user ? <Navigate to="/dashboard" replace /> : <Register />} />
@@ -109,6 +112,7 @@ function App() {
           <Route element={<ProtectedUserRoute />}>
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/dashboard/orders" element={<OrderPage />} />
+            <Route path="/dashboard/order-tracking" element={<OrderTrackingPage />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
           </Route>
 

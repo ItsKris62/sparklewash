@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import aboutVideo from '../assets/videos/dry_cleaning.mp4';
+import ContactUs from './ContactUs';
 
 const AboutUsSection = () => {
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+  const handleContactClick = () => {
+    setIsOverlayOpen(true);
+  };
+
+  const handleOverlayClose = () => {
+    setIsOverlayOpen(false);
+  };
+  
   return (
     <section className="relative py-16 bg-gradient-to-b from-blue-100 to-gray-100">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
@@ -49,15 +60,19 @@ const AboutUsSection = () => {
 
           {/* Call to Action Buttons */}
           <div className="mt-8 space-x-4">
-            <button className="bg-blue-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="bg-blue-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-blue-600 transition-colors duration-300"
+            onClick={() => window.location.href='/learnmore'}>
               Learn More
             </button>
-            <button className="bg-transparent text-blue-500 font-semibold px-6 py-3 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-300">
+            <button className="bg-transparent text-blue-500 font-semibold px-6 py-3 rounded-full border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-300"
+            onClick={handleContactClick}>
               Contact Us
             </button>
           </div>
         </div>
       </div>
+      {/* Contact Form Overlay */}
+      <ContactUs isOpen={isOverlayOpen} onClose={handleOverlayClose} />
     </section>
   );
 };
