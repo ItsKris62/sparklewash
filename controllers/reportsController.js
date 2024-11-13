@@ -35,6 +35,26 @@ exports.getMonthlyReports = async (req, res) => {
       createdAt: { $gte: startDate, $lt: endDate },
     });
 
+    // Prepare response data to match frontend expectations
+    const response = {
+      revenue: {
+        date: `${month}/${year}`,
+        summary: 'Total revenue generated this month',
+        total: monthlyRevenue,
+      },
+      engagement: {
+        date: `${month}/${year}`,
+        summary: 'User engagement for the month',
+        activeUsers: activeUsers,
+      },
+      completion: {
+        date: `${month}/${year}`,
+        summary: 'Order completion rate for the month',
+        completionRate: completedOrders,
+      },
+    };
+
+
     res.json({ monthlyRevenue, activeUsers, completedOrders });
   } catch (error) {
     console.error('Error fetching monthly reports:', error);
