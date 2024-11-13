@@ -1,12 +1,15 @@
+// src/pages/Services.js
 import React, { useState } from 'react';
-import Header from '../layouts/Header'; 
+import Header from '../layouts/Header';
+import RegisterOverlay from '../components/RegisterOverlay';
+
+// Importing the images
 import serviceImage1 from '../assets/images/ironing_shirts.jpg';
 import serviceImage2 from '../assets/images/dry-cleaning.jpg';
 import serviceImage3 from '../assets/images/carpet-cleaning.jpg';
 import serviceImage4 from '../assets/images/house-cleaning.jpg';
 import serviceImage5 from '../assets/images/meal-prep.jpg';
 import serviceImage6 from '../assets/images/lawn_mawing.jpg';
-import RegisterOverlay from '../components/RegisterOverlay'; // Import RegisterOverlay component
 
 const Services = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -18,7 +21,7 @@ const Services = () => {
     {
       image: serviceImage1,
       title: 'Ironing Services',
-      description: 'Fast, affordable, and efficient laundry services for your everyday needs.',
+      description: 'Fast, affordable, and efficient ironing services for your everyday needs.',
       extras: ['Same-day delivery', 'Eco-friendly detergents', 'Premium care'],
     },
     {
@@ -56,7 +59,7 @@ const Services = () => {
   return (
     <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
       <Header />
-      
+
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-gray-500 to-gray-300 text-white py-20 text-center">
         <h1 className="text-5xl font-bold mb-4">Explore Our Services</h1>
@@ -65,30 +68,27 @@ const Services = () => {
         </p>
       </div>
 
-      {/* Services Section */}
-      <div className="container mx-auto px-6 py-16">
-        {/*<h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Our Services</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+      {/* Services Section with Responsive Bento Grid */}
+      <div className="container mx-auto px-6 py-16 sm:px-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[250px] md:gap-6 lg:gap-8">
           {services.map((service, index) => (
             <div
               key={index}
-              className="relative rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 group bg-white"
+              className={`relative rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 active:scale-100 group ${
+                index % 3 === 0 ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'
+              }`}
             >
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-64 object-cover group-hover:opacity-75 transition-opacity duration-300"
+                className="w-full h-full object-cover"
               />
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                  {service.title}
-                </h3>
-                <p className="mt-2 text-gray-600">{service.description}</p>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="p-6 absolute bottom-0 text-white">
-                  <h4 className="text-lg font-semibold">Includes:</h4>
-                  <ul className="list-disc ml-6 mt-2 space-y-1 text-sm">
+              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-90 active:opacity-90 transition-opacity duration-300 p-4 flex flex-col justify-end">
+                <h3 className="text-2xl font-bold text-white">{service.title}</h3>
+                <p className="text-gray-300 mt-2 text-sm sm:text-base">{service.description}</p>
+                <div className="text-sm mt-4">
+                  <h4 className="text-lg font-semibold text-white">Includes:</h4>
+                  <ul className="list-disc ml-5 mt-2 space-y-1 text-gray-200">
                     {service.extras.map((extra, idx) => (
                       <li key={idx}>{extra}</li>
                     ))}
@@ -101,7 +101,7 @@ const Services = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="bg-gradient-to-b from-gray-200 to-gray-500 py-12 text-navy text-center">
+      <div className="bg-gradient-to-b from-gray-200 to-gray-500 py-12 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="mb-6">Join us today and experience the best in service and convenience.</p>
         <button

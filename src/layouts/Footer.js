@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="bg-light-beige py-8 mt-auto">
       <div className="container mx-auto text-navy text-center">
-        <h3 className="text-2xl font-semibold mb-4">Clean Slate</h3>
+        <h3 className="text-2xl  font-playwrite mb-4">Clean Slate</h3>
         <p>Your trusted partner for laundry and dry cleaning services.</p>
         {/* Replace the social media links with new buttons */}
         <div className="flex justify-center items-center gap-4 mt-4">

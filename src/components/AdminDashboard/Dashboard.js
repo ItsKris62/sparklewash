@@ -18,7 +18,6 @@ const Dashboard = () => {
   const [recentOrders, setRecentOrders] = useState([]);
   const [newCustomers, setNewCustomers] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
-  const [points, setPoints] = useState(0);
   const [previousNewCustomers, setPreviousNewCustomers] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +32,7 @@ const Dashboard = () => {
         'Content-Type': 'application/json',
       };
       
-      const [revenueResponse, customersResponse, ordersResponse, pointsResponse] = await Promise.all([
+      const [revenueResponse, customersResponse, ordersResponse] = await Promise.all([
         axios.get("http://localhost:5000/api/admin/total-revenue", { headers }),
         axios.get("http://localhost:5000/api/admin/new-customers", { headers }),
         axios.get("http://localhost:5000/api/admin/orders", { headers }),
@@ -83,7 +82,7 @@ const Dashboard = () => {
  // Sort recent orders by createdAt date in descending order and take the top 15
  const sortedOrders = [...recentOrders]
  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
- .slice(0, 15); // Limit to 15 orders
+ .slice(0, 10); // Limit to 15 orders
 
     return (
       <Table className="w-full">

@@ -32,25 +32,25 @@ const FAQSection = () => {
   ];
 
   return (
-    <section className="my-16">
-      <h2 className="text-4xl font-bold text-center mb-12 text-navy">Frequently Asked Questions</h2>
-      <div className="max-w-4xl mx-auto space-y-6">
+    <section className="my-16 px-4 sm:px-6 lg:px-0">
+      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-navy">Frequently Asked Questions</h2>
+      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className={`border-b-2 ${openFAQ === index ? 'border-blue-500' : 'border-gray-300'} py-6`}
+            className={`border-b ${openFAQ === index ? 'border-blue-500' : 'border-gray-300'} py-4 sm:py-6`}
           >
             <div
               className="flex justify-between items-center cursor-pointer"
               onClick={() => toggleFAQ(index)}
             >
-              <h3 className="text-xl font-medium text-gray-800">{faq.question}</h3>
+              <h3 className="text-lg sm:text-xl font-medium text-gray-800">{faq.question}</h3>
               <span className="text-blue-500 transition-transform duration-300">
                 {openFAQ === index ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </div>
             {openFAQ === index && (
-              <p className="mt-4 text-gray-600 transition-all duration-500 ease-in-out">
+              <p className="mt-3 sm:mt-4 text-gray-600 text-base sm:text-lg transition-all duration-500 ease-in-out">
                 {faq.answer}
               </p>
             )}

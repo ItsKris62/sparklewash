@@ -43,7 +43,7 @@ const AboutUsSection = () => {
           </p>
 
           {/* Key Values Section */}
-          <div className="mt-8 flex flex-wrap justify-center md:justify-start space-x-4">
+            <div className="mt-8 flex flex-wrap justify-center md:justify-start space-x-4">
             <div className="bg-blue-50 rounded-lg p-4 text-center">
               <h4 className="text-xl font-semibold text-blue-700">5+ Years</h4>
               <p className="text-sm text-gray-600">Industry Experience</p>

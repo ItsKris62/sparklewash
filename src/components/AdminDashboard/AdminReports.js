@@ -1,4 +1,3 @@
-// src/pages/AdminReports.js
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
@@ -91,7 +90,7 @@ const AdminReports = () => {
             <>
               <p className="text-gray-600">{reports.engagement.date}</p>
               <p className="text-gray-700 mt-2">{reports.engagement.summary}</p>
-              <p className="text-2xl font-bold text-green-700 mt-4">{reports.engagement.activeUsers}% active users</p>
+              <p className="text-2xl font-bold text-green-700 mt-4">{reports.engagement.activeUsers} active users</p>
             </>
           ) : (
             <p className="text-gray-500">No data available for this month.</p>

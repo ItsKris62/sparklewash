@@ -3,7 +3,6 @@ import React from 'react';
 import '../styles/LearnMore.css';
 import Header from '../layouts/Header';
 
-
 // Importing the images
 import image2 from '../assets/images/vacuum-cleaner.jpg';
 import image1 from '../assets/images/cleaning-product.jpg';
@@ -18,7 +17,7 @@ const LearnMore = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="learn-more-page bg-blue-50 text-gray-800 min-h-screen p-8">
+      <main className="learn-more-page bg-blue-50 text-gray-800 min-h-screen pt-24 p-8">
         <header className="text-center mb-12">
           <h1 className="text-5xl font-bold text-blue-900 mb-4 leading-tight">Discover Clean Slate</h1>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto">
@@ -27,49 +26,12 @@ const LearnMore = () => {
         </header>
 
         {/* Bento Grid Section */}
-        <div className="bento-grid grid gap-4 mb-16">
-          <div
-            className="bento-item h-80 md:h-full col-span-2 row-span-2 bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-            style={{ backgroundImage: `url(${image1})` }}
-          >
-            <div className="overlay">
-              <h3 className="text-2xl font-bold text-white">Professional Laundry</h3>
-              <p className="text-white">Efficient washing for all types of fabrics.</p>
-            </div>
-          </div>
-          <div
-            className="bento-item h-80 md:h-48 bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-            style={{ backgroundImage: `url(${image2})` }}
-          >
-            <div className="overlay">
-              <h3 className="text-xl font-semibold text-white">Dry Cleaning</h3>
-            </div>
-          </div>
-          <div
-            className="bento-item h-80 md:h-full col-span-2 bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-            style={{ backgroundImage: `url(${image3})` }}
-          >
-            <div className="overlay">
-              <h3 className="text-2xl font-bold text-white">Eco-Friendly Solutions</h3>
-              <p className="text-white">Sustainable cleaning to reduce our carbon footprint.</p>
-            </div>
-          </div>
-          <div
-            className="bento-item h-80 md:h-48 bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-            style={{ backgroundImage: `url(${image4})` }}
-          >
-            <div className="overlay">
-              <h3 className="text-xl font-semibold text-white">Carpet Cleaning</h3>
-            </div>
-          </div>
-          <div
-            className="bento-item h-80 md:h-48 bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-            style={{ backgroundImage: `url(${image5})` }}
-          >
-            <div className="overlay">
-              <h3 className="text-xl font-semibold text-white">House Cleaning</h3>
-            </div>
-          </div>
+        <div className="bento-grid grid gap-4 mb-16 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[200px]">
+          <BentoGridItem image={image1} title="Professional Laundry" description="Efficient washing for all types of fabrics." large />
+          <BentoGridItem image={image2} title="Dry Cleaning" />
+          <BentoGridItem image={image3} title="Eco-Friendly Solutions" description="Sustainable cleaning to reduce our carbon footprint." large />
+          <BentoGridItem image={image4} title="Carpet Cleaning" />
+          <BentoGridItem image={image5} title="House Cleaning" />
         </div>
 
         {/* Why Choose Us Section */}
@@ -95,6 +57,21 @@ const LearnMore = () => {
     </div>
   );
 };
+
+// Bento Grid Item component with motion effects
+const BentoGridItem = ({ image, title, description, large }) => (
+  <div
+    className={`bento-item ${
+      large ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'
+    } bg-cover bg-center rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105`}
+    style={{ backgroundImage: `url(${image})` }}
+  >
+    <div className="overlay flex flex-col justify-center items-center p-4 bg-black bg-opacity-50 h-full w-full text-center text-white">
+      <h3 className="text-2xl font-bold">{title}</h3>
+      {description && <p className="text-sm mt-2">{description}</p>}
+    </div>
+  </div>
+);
 
 // Simple reusable card components for feature sections
 const FeatureCard = ({ title, description }) => (

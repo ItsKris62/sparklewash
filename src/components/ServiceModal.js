@@ -1,21 +1,7 @@
-// src/components/ServiceModal.js
 import { useState, useEffect } from 'react';
 import Toast from '../components/ui/Toast';
 import { useAuth } from '../components/context/AuthContext';
 
-/**
- * ServiceModal is a modal component that allows users to enter details for a particular service,
- * such as location, number of rooms, type of fabrics, and extra services. It also displays the total
- * price with tax and allows users to select a payment method.
- * When the user clicks the "Confirm Order" button, it sends a POST request to the server to create a new order.
- * If the order is created successfully, it shows a success toast message, invokes the onSubmit callback with the order data,
- * and closes the modal. In case of an error during submission, it logs the error and shows an error toast message.
- * @param {Object} service - The service object containing the name, base price, and additional services.
- * @param {boolean} isOpen - A boolean indicating whether the modal is open or closed.
- * @param {function} onClose - A function to be called when the user clicks the "Cancel" button.
- * @param {function} onSubmit - A function to be called after a successful order creation. It receives the order data as an argument.
- * @returns {JSX.Element} A JSX element representing the modal component.
- */
 const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
   const [location, setLocation] = useState('');
   const [rooms, setRooms] = useState(1);
@@ -94,7 +80,7 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
-      <div className="bg-white p-6 rounded-xl max-w-lg w-full shadow-lg transition transform duration-300 ease-in-out overflow-auto">
+      <div className="bg-white p-6 rounded-xl max-w-lg w-full shadow-lg transform duration-300 ease-in-out overflow-auto sm:p-8">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           Enter details for {service.name}
         </h2>
@@ -168,20 +154,20 @@ const ServiceModal = ({ service, isOpen, onClose, onSubmit }) => {
         </div>
 
         {/* Total Price Display */}
-        <div className="text-lg font-semibold text-gray-800 text-center mb-8">
+        <div className="text-lg font-semibold text-gray-800 text-center mb-6">
           Total (with tax): <span className="text-blue-600">${total.toFixed(2)}</span>
         </div>
 
         {/* Modal Action Buttons */}
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between">
           <button
-            className="bg-gray-400 text-white px-6 py-3 rounded-lg hover:bg-gray-500 transition-colors duration-200"
+            className="bg-gray-400 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:bg-gray-500 transition-colors duration-200"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+            className="bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
             onClick={handleSubmit}
           >
             Confirm Order
