@@ -7,11 +7,14 @@ import Footer from './layouts/Footer';
 import React from 'react';
 import './App.css';
 
+import Login from './pages/Login';
+import Register from './pages/Register';
+
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
 const LearnMore = lazy(() => import('./pages/LearnMore'));
-const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('./pages/Register'));
+// const Login = lazy(() => import('./pages/Login'));
+// const Register = lazy(() => import('./pages/Register'));
 const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 const OrderPage = lazy(() => import('./pages/OrderPage'));
 const OrderTrackingPage = lazy(() => import('./pages/OrderTrackingPage'));

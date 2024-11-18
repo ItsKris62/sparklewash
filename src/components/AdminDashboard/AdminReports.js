@@ -24,7 +24,7 @@ const AdminReports = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       });
 
-      setReports(response.data); // Expecting { revenue: {...}, engagement: {...}, completion: {...} }
+      setReports(response.data); // Expecting { revenue, engagement, completion }
     } catch (error) {
       console.error('Error fetching reports:', error);
       setError('Failed to fetch reports');
