@@ -31,7 +31,7 @@ exports.getMonthlyReports = async (req, res) => {
 
     // Monthly Order Completion
     const completedOrders = await Order.countDocuments({
-      status: 'Completed',
+      status: 'Fulfilled',
       createdAt: { $gte: startDate, $lt: endDate },
     });
 
@@ -50,12 +50,13 @@ exports.getMonthlyReports = async (req, res) => {
       completion: {
         date: `${month}/${year}`,
         summary: 'Order completion rate for the month',
-        completionRate: completedOrders,
+        completionRate: ((completedOrders / activeUsers) * 100).toFixed(2),
       },
     };
 
 
-    res.json({ monthlyRevenue, activeUsers, completedOrders });
+    res.json(response);
+    
   } catch (error) {
     console.error('Error fetching monthly reports:', error);
     res.status(500).json({ message: 'Failed to fetch reports' });

@@ -6,7 +6,9 @@ const {
   updateUserStatus,
   getOrders,
   getTotalRevenue,
-  getNewCustomers
+  getNewCustomers,
+  getOrderStatusSummary, // Import the function
+  getServicePerformance,
 } = require('../controllers/adminController');
 
 router.use(protect, admin);
@@ -16,5 +18,12 @@ router.put('/users/:id/status', updateUserStatus);
 router.get('/orders', getOrders);
 router.get('/total-revenue', getTotalRevenue);
 router.get('/new-customers', getNewCustomers);
+
+// Order Status Summary
+router.get('/analytics/order-status', getOrderStatusSummary);
+
+// Service Performance Summary
+router.get('/analytics/service-performance', getServicePerformance);
+
 
 module.exports = router;

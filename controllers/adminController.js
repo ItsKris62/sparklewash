@@ -65,3 +65,58 @@ exports.getNewCustomers = asyncHandler(async (req, res) => {
     previousMonthNewCustomers: previousNewCustomers
   });
 });
+
+// Get order status summary
+exports.getOrderStatusSummary = asyncHandler(async (req, res) => {
+  const { month, year } = req.query;
+
+  const selectedMonth = parseInt(month, 10) || new Date().getMonth();
+  const selectedYear = parseInt(year, 10) || new Date().getFullYear();
+
+  const statusSummary = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(selectedYear, selectedMonth, 1),
+          $lt: new Date(selectedYear, selectedMonth + 1, 1),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$status',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  res.json(statusSummary);
+});
+
+// Get service performance summary
+exports.getServicePerformance = asyncHandler(async (req, res) => {
+  const { month, year } = req.query;
+
+  const selectedMonth = parseInt(month, 10) || new Date().getMonth();
+  const selectedYear = parseInt(year, 10) || new Date().getFullYear();
+
+  const performance = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(selectedYear, selectedMonth, 1),
+          $lt: new Date(selectedYear, selectedMonth + 1, 1),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$service',
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+  ]);
+
+  res.json(performance);
+});
