@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import JsBarcode from 'jsbarcode';
 
 const OrderDetailCard = ({ order }) => {
+  const barcodeRef = useRef(null);
+
+  // Generate the barcode when the component renders
+  useEffect(() => {
+    if (order && order._id && barcodeRef.current) {
+      JsBarcode(barcodeRef.current, order._id, {
+        format: 'CODE128',
+        lineColor: '#000',
+        width: 2,
+        height: 50,
+        displayValue: false, // Hide the text below the barcode
+      });
+    }
+  }, [order]);
+
   if (!order) {
     return <div className="p-6 bg-gray-100 rounded-lg shadow-lg">Select an order to view its details.</div>;
   }
@@ -21,19 +37,19 @@ const OrderDetailCard = ({ order }) => {
         <p>Service: {order.service || 'N/A'}</p>
         <p>Extras: {order.extras?.map(extra => extra.name).join(', ') || 'None'}</p>
         <div className="flex justify-between mt-2">
-          <span>Subtotal:</span> 
+          <span>Subtotal:</span>
           <span>${order.subtotal?.toFixed(2) || '0.00'}</span>
         </div>
         <div className="flex justify-between">
-          <span>Shipping:</span> 
+          <span>Shipping:</span>
           <span>${order.shipping || 'N/A'}</span>
         </div>
         <div className="flex justify-between">
-          <span>Tax:</span> 
+          <span>Tax:</span>
           <span>${order.tax?.toFixed(2) || '0.00'}</span>
         </div>
         <div className="flex justify-between text-lg font-bold border-t border-dashed mt-2 pt-2">
-          <span>Total:</span> 
+          <span>Total:</span>
           <span>${order.total?.toFixed(2) || '0.00'}</span>
         </div>
       </div>
@@ -65,17 +81,18 @@ const OrderDetailCard = ({ order }) => {
 
       {/* Barcode Section */}
       <div className="mt-6 text-center">
-        <div className="flex justify-center mb-2">
-          <div className="bg-black h-1 w-8 mx-1"></div>
-          <div className="bg-black h-1 w-4 mx-1"></div>
-          <div className="bg-black h-1 w-6 mx-1"></div>
-          <div className="bg-black h-1 w-8 mx-1"></div>
-          <div className="bg-black h-1 w-3 mx-1"></div>
-          <div className="bg-black h-1 w-6 mx-1"></div>
-          <div className="bg-black h-1 w-5 mx-1"></div>
-          <div className="bg-black h-1 w-8 mx-1"></div>
+        <div className="inline-block border border-dashed p-2 rounded-md bg-gray-50">
+          <canvas
+            ref={barcodeRef}
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto',
+            }}
+          ></canvas>
         </div>
-        <p className="text-xs text-gray-500">Order # {order._id}</p>
+        <p className="text-xs text-gray-500 mt-2">Order ID: {order._id}</p>
       </div>
     </div>
   );
